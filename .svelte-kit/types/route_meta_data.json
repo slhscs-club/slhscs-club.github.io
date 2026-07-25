@@ -1,0 +1,35 @@
+{
+	"/": [
+		"src/routes/+page.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/about": [
+		"src/routes/+layout.ts"
+	],
+	"/calendar": [
+		"src/routes/calendar/+page.server.ts",
+		"src/routes/+layout.ts"
+	],
+	"/competitions": [
+		"src/routes/+layout.ts"
+	],
+	"/gallery": [
+		"src/routes/gallery/+page.server.ts",
+		"src/routes/+layout.ts"
+	],
+	"/join": [
+		"src/routes/+layout.ts"
+	],
+	"/login": [
+		"src/routes/+layout.ts"
+	],
+	"/resources": [
+		"src/routes/resources/+page.ts",
+		"src/routes/+layout.ts"
+	],
+	"/resources/[slug]": [
+		"src/routes/resources/[slug]/+page.ts",
+		"src/routes/+layout.ts"
+	]
+}
