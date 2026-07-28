@@ -15,7 +15,7 @@ const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.def
   __proto__: null,
   default: avikaShrivastava
 }, Symbol.toStringTag, { value: "Module" }));
-const erenTor = "/_app/immutable/assets/eren-tor.CasUbD0x.png?url=true";
+const erenTor = "/_app/immutable/assets/eren-tor.BHq2gK_p.png?url=true";
 const __vite_glob_0_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: erenTor
