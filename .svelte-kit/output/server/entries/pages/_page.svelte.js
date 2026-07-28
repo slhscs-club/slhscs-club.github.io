@@ -1,5 +1,6 @@
 import { a6 as attr_class, a7 as clsx, a4 as head, a8 as bind_props, a9 as ensure_array_like, e as escape_html, aa as attr } from "../../chunks/index.js";
 import { S as Shell } from "../../chunks/Shell.js";
+import "clsx";
 import { f as formatEventDate } from "../../chunks/ics.js";
 function CountUp($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
@@ -7,6 +8,11 @@ function CountUp($$renderer, $$props) {
       class: className = ""
     } = $$props;
     $$renderer2.push(`<span${attr_class(clsx(className))}></span>`);
+  });
+}
+function MetallicPaint($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    $$renderer2.push(`<canvas class="block h-full w-full object-contain"></canvas>`);
   });
 }
 function _page($$renderer, $$props) {
@@ -44,7 +50,9 @@ function _page($$renderer, $$props) {
     Shell($$renderer2, {
       activePage: "home",
       children: ($$renderer3) => {
-        $$renderer3.push(`<section class="section hero-section svelte-1uha8ag"><div class="container hero-grid svelte-1uha8ag"><div class="hero-copy svelte-1uha8ag"><h1 class="page-title">SLHS Computer Science Club</h1> <p class="page-subtitle">We're the <b>Seven Lakes High School Computer Science Club</b>, a place for students interested in CS to connect, develop their skills, and serve their school.</p> <div class="hero-actions svelte-1uha8ag"><a class="btn btn-primary btn-large" href="/join"><i class="fa-solid fa-user-plus"></i> Join the Club</a> <a class="btn btn-secondary btn-large" href="/about"><i class="fa-solid fa-circle-info"></i> Learn More</a></div></div> <div class="hero-card svelte-1uha8ag"><div class="hero-logo-wrap svelte-1uha8ag"><img class="hero-logo-img svelte-1uha8ag" src="/assets/logos/logo.png" alt="SLHS CS Club"/></div> <div class="hero-stat-grid svelte-1uha8ag"><div class="hero-stat svelte-1uha8ag"><strong class="svelte-1uha8ag">Mondays</strong> <p class="svelte-1uha8ag">at 2:45 PM</p></div> <div class="hero-stat svelte-1uha8ag"><strong class="svelte-1uha8ag">Room</strong> <p class="svelte-1uha8ag">1001</p></div> <div class="hero-stat svelte-1uha8ag"><strong class="svelte-1uha8ag">Free</strong> <p class="svelte-1uha8ag">for everyone</p></div></div></div></div></section> <section class="section section-tight achievements-strip svelte-1uha8ag"><div class="container"><div class="achievements-grid svelte-1uha8ag"><!--[-->`);
+        $$renderer3.push(`<section class="section hero-section svelte-1uha8ag"><div class="container hero-grid svelte-1uha8ag"><div class="hero-copy svelte-1uha8ag"><h1 class="page-title">SLHS Computer Science Club</h1> <p class="page-subtitle">We're the <b>Seven Lakes High School Computer Science Club</b>, a place for students interested in CS to connect, develop their skills, and serve their school.</p> <div class="hero-actions svelte-1uha8ag"><a class="btn btn-primary btn-large" href="/join"><i class="fa-solid fa-user-plus"></i> Join the Club</a> <a class="btn btn-secondary btn-large" href="/about"><i class="fa-solid fa-circle-info"></i> Learn More</a></div></div> <div class="hero-card svelte-1uha8ag"><div class="hero-logo-wrap svelte-1uha8ag"><div class="metallic-logo svelte-1uha8ag">`);
+        MetallicPaint($$renderer3);
+        $$renderer3.push(`<!----></div></div> <div class="hero-stat-grid svelte-1uha8ag"><div class="hero-stat svelte-1uha8ag"><strong class="svelte-1uha8ag">Mondays</strong> <p class="svelte-1uha8ag">at 2:45 PM</p></div> <div class="hero-stat svelte-1uha8ag"><strong class="svelte-1uha8ag">Room</strong> <p class="svelte-1uha8ag">1001</p></div> <div class="hero-stat svelte-1uha8ag"><strong class="svelte-1uha8ag">Free</strong> <p class="svelte-1uha8ag">for everyone</p></div></div></div></div></section> <section class="section section-tight achievements-strip svelte-1uha8ag"><div class="container"><div class="achievements-grid svelte-1uha8ag"><!--[-->`);
         const each_array = ensure_array_like(achievements);
         for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
           let ach = each_array[$$index];
