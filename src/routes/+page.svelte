@@ -46,7 +46,7 @@
       <div class="hero-copy">
         <h1 class="page-title">SLHS Computer Science Club</h1>
         <p class="page-subtitle">
-          We're the <b>Seven Lakes High School Computer Science Club</b>, a place for students interested in CS to connect, develop their skills, and serve their school.
+          Welcome to the <b>Seven Lakes High School Computer Science Club!</b> Join us to meet passionate students, grow your interest and knowledge in the field of computer science, and compete and create in a fun and welcoming community.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary btn-large" href="/join"><i class="fa-solid fa-user-plus"></i> Join the Club</a>
@@ -55,7 +55,7 @@
       </div>
       <div class="hero-card">
         <div class="hero-logo-wrap">
-          <img class="hero-logo-img" src="/assets/logos/logo.png" alt="SLHS CS Club" />
+          <img src="/assets/logos/logo.png" alt="SLHS Computer Science Club logo" class="hero-logo" />
         </div>
         <div class="hero-stat-grid">
           <div class="hero-stat">
@@ -161,6 +161,15 @@
             <p>Academic excellence</p>
           </div>
         </div>
+        <div class="subclubs-row">
+          <div class="subclub-card">
+            <strong>App Development</strong>
+            <p>Front-end & back-end app development</p>
+          </div>
+          <div class="subclub-card">
+            <strong>And More???</strong>
+            <p>Talk to us to start your own!</p>
+          </div>
       </div>
     </div>
   </section>
@@ -205,7 +214,7 @@
     <div class="container join-card">
       <h2 class="section-title">Anyone Can Join</h2>
       <p class="section-lead">
-        No sign-ups, fees, or experience necessary. If you show up to meetings, you're part of the club.
+        No sign-ups, fees, or experience necessary. If you show up to meetings, you're a part of the club.
       </p>
       <div class="join-actions">
         <a class="btn btn-primary" href="/join"><i class="fa-solid fa-user-plus"></i> Learn How to Join</a>
@@ -252,7 +261,7 @@
     min-height: 240px;
   }
 
-  .hero-logo-img {
+  .hero-logo {
     width: min(80%, 420px);
     aspect-ratio: 1;
     object-fit: contain;

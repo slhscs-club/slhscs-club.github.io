@@ -1,5 +1,5 @@
 import { r as run_all, H as HYDRATION_ERROR, C as COMMENT_NODE, a as HYDRATION_END, b as HYDRATION_START, c as HYDRATION_START_ELSE, S as STATE_SYMBOL, o as object_prototype, d as array_prototype, U as UNINITIALIZED, f as get_descriptor, h as get_prototype_of, i as is_array, j as is_extensible, k as CLASS_CACHE, A as ATTRIBUTES_CACHE, l as STYLE_CACHE, T as TEXT_CACHE, D as DESTROYED, B as BOUNDARY_EFFECT, R as REACTION_RAN, E as ERROR_VALUE, m as EFFECT, p as CONNECTED, q as CLEAN, M as MAYBE_DIRTY, s as DIRTY, t as DERIVED, W as WAS_MARKED, u as HYDRATION_START_FAILED, v as EFFECT_TRANSPARENT, w as EFFECT_PRESERVED, I as INERT, x as STALE_REACTION, n as noop, y as BLOCK_EFFECT, z as ASYNC, F as EAGER_EFFECT, G as deferred, J as RENDER_EFFECT, K as MANAGED_EFFECT, L as ROOT_EFFECT, N as BRANCH_EFFECT, O as includes, P as REACTION_IS_UPDATING, Q as index_of, V as HEAD_EFFECT, X as DESTROYING, Y as USER_EFFECT, Z as define_property, _ as array_from, $ as is_passive_event, a0 as LEGACY_PROPS, a1 as render, a2 as setContext, a3 as derived } from "./index.js";
-import { D as DEV } from "./false.js";
+const DEV = false;
 function equals(value) {
   return value === this.v;
 }
@@ -464,6 +464,18 @@ function defer_effect(effect, dirty_effects, maybe_dirty_effects) {
   clear_marked(effect.deps);
   set_signal_status(effect, CLEAN);
 }
+function without_reactive_context(fn) {
+  var previous_reaction = active_reaction;
+  var previous_effect = active_effect;
+  set_active_reaction(null);
+  set_active_effect(null);
+  try {
+    return fn();
+  } finally {
+    set_active_reaction(previous_reaction);
+    set_active_effect(previous_effect);
+  }
+}
 function createSubscriber(start) {
   let subscribers = 0;
   let version = source(0);
@@ -601,15 +613,54 @@ class Boundary {
    */
   #hydrate_failed_content(error) {
     const failed = this.#props.failed;
+    const { reset, invoke_onerror } = this.#create_reset(error);
+    queue_micro_task(invoke_onerror);
     if (!failed) return;
     this.#failed_effect = branch(() => {
       failed(
         this.#anchor,
         () => error,
-        () => () => {
-        }
+        () => reset
       );
     });
+  }
+  /**
+   * Creates the `reset` function for a failed boundary, along with a function
+   * that invokes `onerror` with it (if provided)
+   * @param {unknown} error
+   * @returns {{ reset: () => void, invoke_onerror: () => void }}
+   */
+  #create_reset(error) {
+    var did_reset = false;
+    var calling_on_error = false;
+    const reset = () => {
+      if (did_reset) {
+        svelte_boundary_reset_noop();
+        return;
+      }
+      did_reset = true;
+      if (calling_on_error) {
+        svelte_boundary_reset_onerror();
+      }
+      if (this.#failed_effect !== null) {
+        pause_effect(this.#failed_effect, () => {
+          this.#failed_effect = null;
+        });
+      }
+      this.#run(() => {
+        this.#render();
+      });
+    };
+    const invoke_onerror = () => {
+      try {
+        calling_on_error = true;
+        this.#props.onerror?.(error, reset);
+        calling_on_error = false;
+      } catch (err) {
+        invoke_error_boundary(err, this.#effect && this.#effect.parent);
+      }
+    };
+    return { reset, invoke_onerror };
   }
   #hydrate_pending_content() {
     const pending = this.#props.pending;
@@ -806,36 +857,10 @@ class Boundary {
       next();
       set_hydrate_node(skip_nodes());
     }
-    var onerror = this.#props.onerror;
     let failed = this.#props.failed;
-    var did_reset = false;
-    var calling_on_error = false;
-    const reset = () => {
-      if (did_reset) {
-        svelte_boundary_reset_noop();
-        return;
-      }
-      did_reset = true;
-      if (calling_on_error) {
-        svelte_boundary_reset_onerror();
-      }
-      if (this.#failed_effect !== null) {
-        pause_effect(this.#failed_effect, () => {
-          this.#failed_effect = null;
-        });
-      }
-      this.#run(() => {
-        this.#render();
-      });
-    };
     const handle_error_result = (transformed_error) => {
-      try {
-        calling_on_error = true;
-        onerror?.(transformed_error, reset);
-        calling_on_error = false;
-      } catch (error2) {
-        invoke_error_boundary(error2, this.#effect && this.#effect.parent);
-      }
+      const { reset, invoke_onerror } = this.#create_reset(transformed_error);
+      invoke_onerror();
       if (failed) {
         this.#failed_effect = this.#run(() => {
           try {
@@ -951,9 +976,13 @@ function freeze_derived_effects(derived2) {
   for (const e of derived2.effects) {
     if (e.teardown || e.ac) {
       e.teardown?.();
-      e.ac?.abort(STALE_REACTION);
+      if (e.ac !== null) {
+        without_reactive_context(() => {
+          e.ac.abort(STALE_REACTION);
+          e.ac = null;
+        });
+      }
       if (e.fn !== null) e.teardown = noop;
-      e.ac = null;
       remove_reactions(e, 0);
       destroy_effect_children(e);
     }
@@ -1283,6 +1312,9 @@ class Batch {
     const mark = (value) => {
       var reactions = value.reactions;
       if (reactions === null) return;
+      if ((value.f & DERIVED) !== 0 && (value.f & (DIRTY | MAYBE_DIRTY)) === 0) {
+        return;
+      }
       for (const reaction of reactions) {
         var flags2 = reaction.f;
         if ((flags2 & DERIVED) !== 0) {
@@ -1858,18 +1890,6 @@ function mark_reactions(signal, status, updated_during_traversal) {
     }
   }
 }
-function without_reactive_context(fn) {
-  var previous_reaction = active_reaction;
-  var previous_effect = active_effect;
-  set_active_reaction(null);
-  set_active_effect(null);
-  try {
-    return fn();
-  } finally {
-    set_active_reaction(previous_reaction);
-    set_active_effect(previous_effect);
-  }
-}
 let is_updating_effect = false;
 let is_destroying_effect = false;
 function set_is_destroying_effect(value) {
@@ -2105,6 +2125,13 @@ function remove_reaction(signal, dependency) {
     if (derived2.v !== UNINITIALIZED) {
       update_derived_status(derived2);
     }
+    if (derived2.ac !== null) {
+      without_reactive_context(() => {
+        derived2.ac.abort(STALE_REACTION);
+        derived2.ac = null;
+        set_signal_status(derived2, DIRTY);
+      });
+    }
     freeze_derived_effects(derived2);
     remove_reactions(derived2, 0);
   }
@@ -2125,7 +2152,7 @@ function update_effect(effect) {
   var previous_effect = active_effect;
   var was_updating_effect = is_updating_effect;
   active_effect = effect;
-  is_updating_effect = true;
+  is_updating_effect = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) === 0;
   try {
     if ((flags2 & (BLOCK_EFFECT | MANAGED_EFFECT)) !== 0) {
       destroy_block_effect_children(effect);
@@ -2963,6 +2990,7 @@ function Root($$renderer, $$props) {
 }
 const root = asClassComponent(Root);
 export {
+  DEV as D,
   root as r,
   safe_not_equal as s
 };
