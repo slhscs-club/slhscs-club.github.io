@@ -1,3 +1,5 @@
+import { parse, addWeeks, addMonths } from 'date-fns';
+
 export type ICSEvent = {
   uid: string;
   summary: string;
@@ -11,52 +13,44 @@ export function parseICS(icsText: string): ICSEvent[] {
   const events: ICSEvent[] = [];
   const lines = icsText.replace(/\r\n/g, '\n').split('\n');
 
-  let currentEvent: Partial<ICSEvent> | null = null;
-  let currentKey: string | null = null;
-  let currentValue = '';
+  let cur: Record<string, string> | null = null;
+  let key: string | null = null;
+  let val = '';
 
-  function flushProperty() {
-    if (currentKey && currentValue !== '') {
-      if (currentKey === 'DTSTART') {
-        currentEvent!.start = parseICSDate(currentValue);
-      } else if (currentKey === 'DTEND') {
-        currentEvent!.end = parseICSDate(currentValue);
-      } else if (currentKey === 'SUMMARY') {
-        currentEvent!.summary = decodeICSText(currentValue);
-      } else if (currentKey === 'DESCRIPTION') {
-        currentEvent!.description = decodeICSText(currentValue);
-      } else if (currentKey === 'LOCATION') {
-        currentEvent!.location = decodeICSText(currentValue);
-      } else if (currentKey === 'UID') {
-        currentEvent!.uid = currentValue;
+  function flush() {
+    if (key && val !== '' && cur) {
+      if (key === 'EXDATE' && cur[key]) {
+        cur[key] += ',' + val;
+      } else {
+        cur[key] = val;
       }
     }
-    currentKey = null;
-    currentValue = '';
+    key = null;
+    val = '';
   }
 
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
+  for (const raw of lines) {
+    const line = raw.trim();
 
     if (line === 'BEGIN:VEVENT') {
-      flushProperty();
-      currentEvent = {};
+      flush();
+      cur = {};
     } else if (line === 'END:VEVENT') {
-      flushProperty();
-      if (currentEvent && currentEvent.uid && currentEvent.summary && currentEvent.start) {
-        events.push(currentEvent as ICSEvent);
+      flush();
+      if (cur && cur.UID && cur.SUMMARY && cur.DTSTART) {
+        events.push(...expand(cur));
       }
-      currentEvent = null;
+      cur = null;
     } else if (line.startsWith(' ') || line.startsWith('\t')) {
-      currentValue += line.substring(1);
-    } else if (currentEvent) {
-      flushProperty();
-      const colonIndex = line.indexOf(':');
-      if (colonIndex !== -1) {
-        const keyPart = line.substring(0, colonIndex);
-        currentValue = line.substring(colonIndex + 1);
-        const semiIndex = keyPart.indexOf(';');
-        currentKey = semiIndex !== -1 ? keyPart.substring(0, semiIndex) : keyPart;
+      val += line.substring(1);
+    } else if (cur) {
+      flush();
+      const ci = line.indexOf(':');
+      if (ci !== -1) {
+        const kp = line.substring(0, ci);
+        val = line.substring(ci + 1);
+        const si = kp.indexOf(';');
+        key = si !== -1 ? kp.substring(0, si) : kp;
       }
     }
   }
@@ -64,49 +58,156 @@ export function parseICS(icsText: string): ICSEvent[] {
   return events;
 }
 
-function parseICSDate(value: string): Date {
-  const dateStr = value.replace(/[^0-9]/g, '');
-  
-  if (value.includes('T') && dateStr.length >= 14) {
-    const year = parseInt(dateStr.substring(0, 4));
-    const month = parseInt(dateStr.substring(4, 6)) - 1;
-    const day = parseInt(dateStr.substring(6, 8));
-    const hour = parseInt(dateStr.substring(8, 10)) || 0;
-    const minute = parseInt(dateStr.substring(10, 12)) || 0;
-    const second = parseInt(dateStr.substring(12, 14)) || 0;
-    
-    return new Date(Date.UTC(year, month, day, hour, minute, second));
+function expand(props: Record<string, string>): ICSEvent[] {
+  const start = parseDate(props.DTSTART);
+  const end = props.DTEND ? parseDate(props.DTEND) : new Date(start.getTime() + 3600000);
+  const dur = end.getTime() - start.getTime();
+
+  const exDates: Date[] = [];
+  if (props.EXDATE) {
+    for (const part of props.EXDATE.split(',')) {
+      const ci = part.lastIndexOf(':');
+      exDates.push(parseDate(ci !== -1 ? part.substring(ci + 1) : part));
+    }
+  }
+
+  if (props.RRULE) {
+    try {
+      const occs = expandRRule(props.DTSTART, props.RRULE);
+      return occs
+        .filter((d) => !exDates.some((ex) =>
+          ex.getFullYear() === d.getFullYear() &&
+          ex.getMonth() === d.getMonth() &&
+          ex.getDate() === d.getDate()
+        ))
+        .map((d) => ({
+          uid: props.UID + '_' + d.getTime(),
+          summary: props.SUMMARY || '',
+          description: props.DESCRIPTION,
+          location: props.LOCATION,
+          start: d,
+          end: new Date(d.getTime() + dur),
+        }));
+    } catch {
+      // fall through
+    }
+  }
+
+  return [{
+    uid: props.UID,
+    summary: props.SUMMARY || '',
+    description: props.DESCRIPTION,
+    location: props.LOCATION,
+    start,
+    end,
+  }];
+}
+
+function expandRRule(dtstart: string, rrule: string): Date[] {
+  const startDate = parseDate(dtstart);
+  const p = parseRRule(rrule);
+  const res: Date[] = [];
+
+  const until = p.until ? parseDate(p.until.replace(/T.*/, 'T000000Z')) : null;
+
+  if (p.freq === 'WEEKLY') {
+    let cur = new Date(startDate);
+    let i = 200;
+    while (i-- > 0) {
+      if (until && cur > until) break;
+      if (p.byday) {
+        const dow = { SU: 0, MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6 }[p.byday];
+        if (cur.getDay() === dow) res.push(new Date(cur));
+      } else {
+        res.push(new Date(cur));
+      }
+      cur = addWeeks(cur, p.interval || 1);
+    }
+  } else if (p.freq === 'MONTHLY') {
+    let cur = new Date(startDate);
+    let i = 60;
+    while (i-- > 0) {
+      if (until && cur > until) break;
+      if (p.byday) {
+        const m = p.byday.match(/^(-?\d+)([A-Z]+)$/);
+        if (m) {
+          const day = nthDayOfMonth(cur.getFullYear(), cur.getMonth(), m[2], parseInt(m[1]));
+          if (day) {
+            res.push(new Date(cur.getFullYear(), cur.getMonth(), day,
+              cur.getHours(), cur.getMinutes(), cur.getSeconds()));
+          }
+        }
+      } else {
+        res.push(new Date(cur));
+      }
+      cur = addMonths(cur, p.interval || 1);
+    }
+  }
+
+  return res;
+}
+
+function nthDayOfMonth(year: number, month: number, dayName: string, nth: number): number | null {
+  const dow: Record<string, number> = { SU: 0, MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6 };
+  const target = dow[dayName];
+  if (target === undefined) return null;
+
+  if (nth > 0) {
+    const first = new Date(year, month, 1);
+    let diff = target - first.getDay();
+    if (diff < 0) diff += 7;
+    const day = 1 + diff + (nth - 1) * 7;
+    return day > new Date(year, month + 1, 0).getDate() ? null : day;
   } else {
-    const year = parseInt(value.substring(0, 4));
-    const month = parseInt(value.substring(4, 6)) - 1;
-    const day = parseInt(value.substring(6, 8));
-    return new Date(year, month, day);
+    const last = new Date(year, month + 1, 0);
+    let diff = last.getDay() - target;
+    if (diff < 0) diff += 7;
+    const day = last.getDate() - diff + (nth + 1) * 7;
+    return day < 1 ? null : day;
   }
 }
 
-function decodeICSText(text: string): string {
-  return text
-    .replace(/\\n/g, '\n')
-    .replace(/\\N/g, '\n')
-    .replace(/\\,/g, ',')
-    .replace(/\\;/g, ';')
-    .replace(/\\\\/g, '\\');
+function parseRRule(rrule: string) {
+  const parts = rrule.split(';');
+  const p: Record<string, string> = {};
+  for (const part of parts) {
+    const [k, v] = part.split('=');
+    p[k] = v;
+  }
+  return {
+    freq: p.FREQ || '',
+    interval: p.INTERVAL ? parseInt(p.INTERVAL) : undefined,
+    until: p.UNTIL,
+    byday: p.BYDAY,
+  };
+}
+
+function parseDate(value: string): Date {
+  const v = value.toUpperCase();
+  if (v.includes('T')) {
+    return parse(v, v.endsWith('Z') ? "yyyyMMdd'T'HHmmssX" : "yyyyMMdd'T'HHmmss", new Date());
+  }
+  return parse(v, 'yyyyMMdd', new Date());
 }
 
 export function formatEventDate(date: Date): string {
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const now = new Date();
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    ...(date.getFullYear() !== now.getFullYear() && { year: 'numeric' }),
+  });
 }
 
 export function getEventType(summary: string, description?: string): string {
-  const lower = (summary + ' ' + (description || '')).toLowerCase();
-  if (lower.includes('contest') || lower.includes('competition')) return 'contest';
-  if (lower.includes('cp') || lower.includes('competitive') || lower.includes('practice') || lower.includes('uil')) return 'cp';
-  if (lower.includes('social') || lower.includes('camp') || lower.includes('socials')) return 'social';
-  if (lower.includes('speaker') || lower.includes('workshop')) return 'special';
+  const t = (summary + ' ' + (description || '')).toLowerCase();
+  if (/contest|competition/.test(t)) return 'contest';
+  if (/cp|competitive|practice|uil/.test(t)) return 'cp';
+  if (/social|camp|socials/.test(t)) return 'social';
+  if (/speaker|workshop/.test(t)) return 'special';
   return 'meeting';
 }
 
 export function getEventColor(type: string): string {
-  if (type === 'cp' || type === 'special') return 'color-blue';
-  return 'color-orange';
+  return type === 'cp' || type === 'special' ? 'color-blue' : 'color-orange';
 }
