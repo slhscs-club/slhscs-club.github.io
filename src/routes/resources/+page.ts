@@ -13,7 +13,7 @@ export const load: PageLoad = () => {
 
   const markdownFiles = import.meta.glob(
     '$lib/assets/resources/*.md',
-    { eager: true, as: 'raw' }
+    { eager: true, query: '?raw', import: 'default' }
   );
 
   type ResourceType = 'PDF' | 'Document' | 'Guide';

@@ -1,5 +1,6 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
+  import PageHero from '$lib/components/PageHero.svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -12,12 +13,7 @@
 </svelte:head>
 
 <Shell activePage="resources">
-  <section class="section res-hero">
-    <div class="container">
-      <h1 class="page-title">{resource.title}</h1>
-      <p class="page-subtitle">{resource.type}</p>
-    </div>
-  </section>
+  <PageHero title={resource.title} subtitle={resource.type} />
 
   <section class="section">
     <div class="container">
@@ -78,9 +74,6 @@
 </Shell>
 
 <style>
-  .res-hero { text-align: center; padding: 6rem 0 2rem; }
-  .res-hero .page-subtitle { margin-left: auto; margin-right: auto; margin-top: 1rem; }
-
   .article-body {
     max-width: 900px;
     margin: 0 auto 1.5rem;

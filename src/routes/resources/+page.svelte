@@ -1,5 +1,7 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
+  import PageHero from '$lib/components/PageHero.svelte';
+  import CTACard from '$lib/components/CTACard.svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -12,12 +14,7 @@
 </svelte:head>
 
 <Shell activePage="resources">
-  <section class="section res-hero">
-    <div class="container">
-      <h1 class="page-title">Resources</h1>
-      <p class="page-subtitle">Guides, slideshows, and learning materials from our club presentations.</p>
-    </div>
-  </section>
+  <PageHero title="Resources" subtitle="Guides, slideshows, and learning materials from our club presentations." />
 
   <section class="section">
     <div class="container">
@@ -44,21 +41,13 @@
     </div>
   </section>
 
-  <section class="section">
-    <div class="container cta-card color-orange">
-      <h2 class="section-title">Have a resource to share?</h2>
-      <p class="section-lead">If you've created a presentation or guide, we'd love to include it here. Let us know on Discord.</p>
-      <div class="cta-actions">
-        <a class="btn btn-primary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Join Discord</a>
-        <a class="btn btn-secondary" href="/"><i class="fa-solid fa-house"></i> Back Home</a>
-      </div>
-    </div>
-  </section>
+  <CTACard title="Have a resource to share?" lead="If you've created a presentation or guide, we'd love to include it here. Let us know on Discord.">
+    <a class="btn btn-primary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Join Discord</a>
+    <a class="btn btn-secondary" href="/"><i class="fa-solid fa-house"></i> Back Home</a>
+  </CTACard>
 </Shell>
 
 <style>
-  .res-hero { text-align: center; padding: 6rem 0 2rem; }
-  .res-hero .page-subtitle { margin-left: auto; margin-right: auto; }
   .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
 
   .resource-card {
@@ -83,11 +72,4 @@
   }
   .resource-card h3 { margin: 0 0 0.4rem; }
   .resource-card p { margin: 0; opacity: 0.85; font-size: 0.9rem; }
-
-  .cta-card {
-    padding: 2.4rem; text-align: center;
-    background: var(--color-surface);
-  }
-  .cta-actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
-  .cta-card .section-title, .cta-card .section-lead { margin-left: auto; margin-right: auto; }
 </style>
