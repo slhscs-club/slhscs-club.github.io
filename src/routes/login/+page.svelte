@@ -1,5 +1,6 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
+  import PageHero from '$lib/components/PageHero.svelte';
 </script>
 
 <svelte:head>
@@ -8,12 +9,7 @@
 </svelte:head>
 
 <Shell activePage="login">
-  <section class="section login-hero">
-    <div class="container">
-      <h1 class="page-title">Web Portal</h1>
-      <p class="page-subtitle">Login to access club resources, manage your profile, and more. This feature is coming soon.</p>
-    </div>
-  </section>
+  <PageHero title="Web Portal" subtitle="Login to access club resources, manage your profile, and more. This feature is coming soon." />
 
   <section class="section">
     <div class="login-card">
@@ -27,16 +23,6 @@
 </Shell>
 
 <style>
-  .login-hero {
-    text-align: center;
-    padding: 6rem 0 2rem;
-  }
-
-  .login-hero .page-subtitle {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .login-card {
     max-width: 500px;
     margin: 0 auto;

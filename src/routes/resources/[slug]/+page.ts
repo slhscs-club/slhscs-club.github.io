@@ -17,7 +17,7 @@ export const load: PageLoad = async ({ params }) => {
 
   const markdownModules = import.meta.glob(
     '$lib/assets/resources/*.md',
-    { eager: true, as: 'raw' }
+    { eager: true, query: '?raw', import: 'default' }
   );
 
   const findMatchingEntry = (modules: Record<string, unknown>) => {
