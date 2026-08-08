@@ -1,9 +1,12 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
   import CountUp from '$lib/components/CountUp.svelte';
+  import CTACard from '$lib/components/CTACard.svelte';
+  import Masonry from '$lib/components/Masonry.svelte';
+  import Lightbox from '$lib/components/Lightbox.svelte';
   import type { PageData } from './$types';
   import { formatEventDate } from '$lib/ics';
-  import { openLightbox, closeLightbox, handleLightboxKeydown, type LightboxImage } from '$lib/lightbox';
+  import { openLightbox, closeLightbox, type LightboxImage } from '$lib/lightbox';
 
   export let data: PageData;
   const { highlights, events: serverEvents } = data;
@@ -170,6 +173,7 @@
             <strong>And More???</strong>
             <p>Talk to us to start your own!</p>
           </div>
+        </div>
       </div>
     </div>
   </section>
@@ -184,45 +188,21 @@
 
     <section class="section highlights-section">
       <div class="container">
-        <div class="highlights-grid">
-          {#each highlights as img}
-            <div class="highlight-card" onclick={() => onOpenLightbox(img)}>
-              <img src="{img.src}" alt="{img.alt}" loading="lazy" />
-            </div>
-          {/each}
-        </div>
+        <Masonry images={highlights} onOpen={onOpenLightbox} colorShiftOnHover />
         <div class="highlights-cta">
           <a class="btn btn-secondary" href="/gallery"><i class="fa-solid fa-images"></i> View Full Gallery</a>
         </div>
       </div>
     </section>
-
-    {#if selectedImage}
-      <div class="lightbox-backdrop" role="button" tabindex="0" onclick={onCloseLightbox} onkeydown={(e) => e.key === 'Enter' || e.key === ' ' ? onCloseLightbox() : null}>
-        <div class="lightbox-content" onclick={(e) => e.stopPropagation()}>
-          <button class="lightbox-close" onclick={onCloseLightbox} aria-label="Close">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-          <img src="{selectedImage.src}" alt="{selectedImage.alt}" class="lightbox-image" />
-          <p class="lightbox-caption">{selectedImage.alt}</p>
-        </div>
-      </div>
-    {/if}
   {/if}
 
-  <section class="section" id="join">
-    <div class="container join-card">
-      <h2 class="section-title">Anyone Can Join</h2>
-      <p class="section-lead">
-        No sign-ups, fees, or experience necessary. If you show up to meetings, you're a part of the club.
-      </p>
-      <div class="join-actions">
-        <a class="btn btn-primary" href="/join"><i class="fa-solid fa-user-plus"></i> Learn How to Join</a>
-        <a class="btn btn-secondary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Join Discord</a>
-      </div>
-    </div>
-  </section>
+  <CTACard title="Anyone Can Join" lead="No sign-ups, fees, or experience necessary. If you show up to meetings, you're a part of the club.">
+    <a class="btn btn-primary" href="/join"><i class="fa-solid fa-user-plus"></i> Learn How to Join</a>
+    <a class="btn btn-secondary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Join Discord</a>
+  </CTACard>
 </Shell>
+
+<Lightbox image={selectedImage} onClose={onCloseLightbox} />
 
 <style>
   .hero-section {
@@ -243,7 +223,6 @@
 
   .hero-actions,
   .overview-actions,
-  .join-actions,
   .events-cta {
     display: flex;
     flex-wrap: wrap;
@@ -285,7 +264,7 @@
   .hero-stat strong {
     display: block;
     margin-bottom: 0.35rem;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .hero-stat p {
@@ -337,7 +316,7 @@
   .event-card {
     padding: 1.2rem;
     border: 3px solid var(--color-orange);
-    background: var(--color-orange);  
+    background: var(--color-orange);
     color: var(--color-black);
   }
 
@@ -436,103 +415,10 @@
 
   .highlights-hero { padding: 4rem 0 1rem; }
   .highlights-section { padding-top: 0; }
-  .highlights-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-
-  .highlight-card {
-    aspect-ratio: 4 / 3;
-    border: 3px solid var(--color-orange);
-    background: var(--color-orange);
-    color: var(--color-black);
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: var(--orange-shadow);
-    transition: transform 0.15s var(--ease-hover), box-shadow 0.15s var(--ease-hover);
-  }
-
-  .highlight-card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--color-orange);
-  }
-
-  .highlight-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
   .highlights-cta { margin-top: 2rem; }
-
-  .lightbox-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    padding: 2rem;
-  }
-
-  .lightbox-content {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-  }
-
-  .lightbox-close {
-    position: absolute;
-    top: -3rem;
-    right: 0;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0;
-    border: 3px solid var(--color-white);
-    background: transparent;
-    color: var(--color-white);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-  }
-
-  .lightbox-image {
-    max-width: 90vw;
-    max-height: 90vh;
-    object-fit: contain;
-    display: block;
-  }
-
-  .lightbox-caption {
-    margin-top: 1rem;
-    text-align: center;
-    color: var(--color-text-muted);
-    font-size: 1rem;
-  }
 
   .events-cta {
     margin-top: 2rem;
-  }
-
-  .join-actions {
-    justify-content: center;
-  }
-
-  .join-card {
-    padding: 2.4rem;
-    text-align: center;
-    border: 3px solid var(--color-orange);
-    background: var(--color-surface);
-  }
-
-  .join-card .section-title,
-  .join-card .section-lead {
-    margin-left: auto;
-    margin-right: auto;
   }
 
   @media (max-width: 1024px) {
