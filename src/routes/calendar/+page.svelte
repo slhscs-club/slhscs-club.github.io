@@ -1,5 +1,7 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
+  import PageHero from '$lib/components/PageHero.svelte';
+  import CTACard from '$lib/components/CTACard.svelte';
   import { formatEventDate, getEventType, getEventColor, type ICSEvent } from '$lib/ics';
   import { generateCalendarDays, getEventsForDay, getUpcomingEvents, formatMonth, prevMonth, nextMonth } from '$lib/calendar';
   import type { PageData } from './$types';
@@ -39,12 +41,7 @@
 </svelte:head>
 
 <Shell activePage="calendar">
-  <section class="section cal-hero">
-    <div class="container">
-      <h1 class="page-title">Calendar</h1>
-      <p class="page-subtitle">All our events in one place. We meet every Monday at 2:45 PM in Room 1001.</p>
-    </div>
-  </section>
+  <PageHero title="Calendar" subtitle="All our events in one place. We meet every Monday at 2:45 PM in Room 1001." />
 
   <section class="section">
     <div class="container">
@@ -127,25 +124,13 @@
     </div>
   </section>
 
-  <section class="section">
-    <div class="container cta-card color-orange">
-      <h2 class="section-title">Add to Your Calendar</h2>
-      <p class="section-lead">Subscribe to our Google Calendar to get updates directly in your own calendar app.</p>
-      <div class="cta-actions">
-        <a class="btn btn-primary" href="https://calendar.google.com" target="_blank"><i class="fa-brands fa-google"></i> Open Google Calendar</a>
-        <a class="btn btn-secondary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Discord for Updates</a>
-      </div>
-    </div>
-  </section>
+  <CTACard title="Add to Your Calendar" lead="Subscribe to our Google Calendar to get updates directly in your own calendar app.">
+    <a class="btn btn-primary" href="https://calendar.google.com" target="_blank"><i class="fa-brands fa-google"></i> Open Google Calendar</a>
+    <a class="btn btn-secondary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Discord for Updates</a>
+  </CTACard>
 </Shell>
 
 <style>
-  .cal-hero {
-    text-align: center;
-    padding: 6rem 0 2rem;
-  }
-  .cal-hero .page-subtitle { margin-left: auto; margin-right: auto; }
-
   .loading-state, .error-state, .empty-state {
     padding: 1.2rem;
     border: 3px solid var(--color-orange);
@@ -324,14 +309,6 @@
     background: transparent;
     color: var(--color-text-muted);
   }
-
-  .cta-card {
-    padding: 2.4rem;
-    text-align: center;
-    background: var(--color-surface);
-  }
-  .cta-actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
-  .cta-card .section-title, .cta-card .section-lead { margin-left: auto; margin-right: auto; }
 
   @media (max-width: 768px) {
     .event-row { grid-template-columns: 1fr; }
