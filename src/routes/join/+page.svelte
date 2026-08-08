@@ -1,5 +1,7 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
+  import PageHero from '$lib/components/PageHero.svelte';
+  import CTACard from '$lib/components/CTACard.svelte';
 </script>
 
 <svelte:head>
@@ -8,12 +10,7 @@
 </svelte:head>
 
 <Shell activePage="join">
-  <section class="section join-hero">
-    <div class="container">
-      <h1 class="page-title">Join the Club</h1>
-      <p class="page-subtitle">Anyone can join. No sign-ups, fees, or experience necessary.</p>
-    </div>
-  </section>
+  <PageHero title="Join the Club" subtitle="Anyone can join. No sign-ups, fees, or experience necessary." />
 
   <section class="section">
     <div class="container">
@@ -73,29 +70,13 @@
     </div>
   </section>
 
-  <section class="section">
-    <div class="container cta-card color-orange">
-      <h2 class="section-title">Ready to join?</h2>
-      <p class="section-lead">Come to Room 1001 on Monday at 2:45 PM or join our Discord to stay connected.</p>
-      <div class="cta-actions">
-        <a class="btn btn-primary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Join Discord</a>
-        <a class="btn btn-secondary" href="/"><i class="fa-solid fa-house"></i> Back Home</a>
-      </div>
-    </div>
-  </section>
+  <CTACard title="Ready to join?" lead="Come to Room 1001 on Monday at 2:45 PM or join our Discord to stay connected.">
+    <a class="btn btn-primary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Join Discord</a>
+    <a class="btn btn-secondary" href="/"><i class="fa-solid fa-house"></i> Back Home</a>
+  </CTACard>
 </Shell>
 
 <style>
-  .join-hero {
-    text-align: center;
-    padding: 6rem 0 2rem;
-  }
-
-  .join-hero .page-subtitle {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .benefits-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -200,25 +181,6 @@
   .signup-form-box p {
     margin: 0;
     color: var(--color-text-muted);
-  }
-
-  .cta-card {
-    padding: 2.4rem;
-    text-align: center;
-    background: var(--color-surface);
-  }
-
-  .cta-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .cta-card .section-title,
-  .cta-card .section-lead {
-    margin-left: auto;
-    margin-right: auto;
   }
 
   @media (max-width: 1024px) {
