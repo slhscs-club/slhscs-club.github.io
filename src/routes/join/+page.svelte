@@ -86,9 +86,10 @@
 
   .benefit-card {
     padding: 1.5rem;
-    border: 3px solid var(--accent, var(--color-orange));
-    background: var(--accent, var(--color-surface));
-    color: var(--accent-text, var(--color-white));
+    border: 1px solid var(--color-blue);
+    border-top: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
     text-align: center;
   }
 

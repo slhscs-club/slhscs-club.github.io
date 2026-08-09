@@ -11,22 +11,33 @@
     ariaLabel?: string;
   } = $props();
 
-  let carousel = $state(createCarouselState(items.length, visibleSlides));
+  let carousel = $state(createCarouselState(0, 1));
   let trackEl: HTMLDivElement | undefined = $state();
 
   let trackTransform = $derived(getTrackTransform(carousel, visibleSlides));
   let maxIndex = $derived(Math.max(0, items.length - visibleSlides));
 
+  function withBounds(state = carousel) {
+    return {
+      ...state,
+      totalSlides: items.length,
+      maxIndex,
+      currentIndex: Math.min(state.currentIndex, maxIndex)
+    };
+  }
+
   function onGoTo(index: number) {
-    carousel = goTo(carousel, index);
+    carousel = goTo(withBounds(), index);
   }
 
   function onGoNext() {
-    carousel = goNext(carousel);
+    const bounded = withBounds();
+    carousel = bounded.currentIndex >= maxIndex ? goTo(bounded, 0) : goNext(bounded);
   }
 
   function onGoPrev() {
-    carousel = goPrev(carousel);
+    const bounded = withBounds();
+    carousel = bounded.currentIndex <= 0 ? goTo(bounded, maxIndex) : goPrev(bounded);
   }
 
   function onDragStart(e: PointerEvent) {
@@ -39,12 +50,12 @@
 
   function onDragEnd() {
     const width = trackEl ? trackEl.clientWidth / items.length : 0;
-    carousel = handleDragEnd(carousel, width);
+    carousel = handleDragEnd(withBounds(), width);
   }
 </script>
 
 <div class="carousel" style="--visible-slides: {visibleSlides};">
-  <button class="carousel-btn carousel-btn--prev" onclick={onGoPrev} aria-label="Previous" disabled={carousel.currentIndex === 0}>
+  <button class="carousel-btn carousel-btn--prev" onclick={onGoPrev} aria-label="Previous">
     <i class="fa-solid fa-chevron-left"></i>
   </button>
 
@@ -74,7 +85,7 @@
     </div>
   </div>
 
-  <button class="carousel-btn carousel-btn--next" onclick={onGoNext} aria-label="Next" disabled={carousel.currentIndex >= maxIndex}>
+  <button class="carousel-btn carousel-btn--next" onclick={onGoNext} aria-label="Next">
     <i class="fa-solid fa-chevron-right"></i>
   </button>
 </div>
@@ -104,6 +115,8 @@
   .carousel-viewport {
     flex: 1;
     overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
   }
 
   .carousel-track {
@@ -178,10 +191,7 @@
     color: var(--color-black);
   }
 
-  .carousel-btn:disabled {
-    opacity: 0.3;
-    cursor: default;
-  }
+  .carousel-btn:disabled { opacity: 1; }
 
   .carousel-dots {
     display: flex;

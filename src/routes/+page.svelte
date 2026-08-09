@@ -1,9 +1,10 @@
 <script lang="ts">
   import Shell from '$lib/components/Shell.svelte';
-  import CountUp from '$lib/components/CountUp.svelte';
   import CTACard from '$lib/components/CTACard.svelte';
   import Masonry from '$lib/components/Masonry.svelte';
   import Lightbox from '$lib/components/Lightbox.svelte';
+  import ParticleLogo from '$lib/components/ParticleLogo.svelte';
+  import StoryCarousel from '$lib/components/StoryCarousel.svelte';
   import type { PageData } from './$types';
   import { formatEventDate } from '$lib/ics';
   import { openLightbox, closeLightbox, type LightboxImage } from '$lib/lightbox';
@@ -33,6 +34,14 @@
     start: new Date(e.start)
   }));
   let loadingEvents = false;
+  const homeImages = import.meta.glob('$lib/assets/home/*.{jpg,jpeg,png,webp}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+  const orderedHomeImages = Object.entries(homeImages).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
+  const activitySlides = [
+    ['Weekly meetings', 'Member-led presentations, demos, and discussions across every corner of CS.'],
+    ['Competitive programming', 'Practice together for UIL, USACO, HP CodeWars, and local contests.'],
+    ['Build and ship', 'Explore web, app, AI, and game development through practical projects.'],
+    ['Community first', 'Social events and subclubs make room for every interest and experience level.']
+  ].map(([title, description], index) => ({ image: orderedHomeImages[index % Math.max(1, orderedHomeImages.length)]?.[1] ?? '/assets/logos/logo.png', eyebrow: `0${index + 1}`, title, description }));
 </script>
 
 <svelte:head>
@@ -45,6 +54,7 @@
 
 <Shell activePage="home">
   <section class="section hero-section">
+    <ParticleLogo />
     <div class="container hero-grid">
       <div class="hero-copy">
         <h1 class="page-title">SLHS Computer Science Club</h1>
@@ -56,37 +66,19 @@
           <a class="btn btn-secondary btn-large" href="/about"><i class="fa-solid fa-circle-info"></i> Learn More</a>
         </div>
       </div>
-      <div class="hero-card">
-        <div class="hero-logo-wrap">
-          <img src="/assets/logos/logo.png" alt="SLHS Computer Science Club logo" class="hero-logo" />
+      <div class="hero-facts" aria-label="Club details">
+        <div class="hero-fact">
+          <span>01</span>
+          <div><strong>Mondays</strong><p>at 2:45 PM</p></div>
         </div>
-        <div class="hero-stat-grid">
-          <div class="hero-stat">
-            <strong>Mondays</strong>
-            <p>at 2:45 PM</p>
-          </div>
-          <div class="hero-stat">
-            <strong>Room</strong>
-            <p>1001</p>
-          </div>
-          <div class="hero-stat">
-            <strong>Free</strong>
-            <p>for everyone</p>
-          </div>
+        <div class="hero-fact">
+          <span>02</span>
+          <div><strong>Room 1001</strong><p>after school</p></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-tight achievements-strip">
-    <div class="container">
-      <div class="achievements-grid">
-        {#each achievements as ach}
-          <div class="achievement-card">
-            <strong>{ach.prefix}<CountUp from={0} to={ach.num} separator="" direction="up" duration={0.8} />{ach.suffix}</strong>
-            <p>{ach.label}</p>
-          </div>
-        {/each}
+        <div class="hero-fact">
+          <span>03</span>
+          <div><strong>Free to join</strong><p>for every Seven Lakes student</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -109,13 +101,7 @@
             <p>Mondays at 2:45 PM in Room 1001</p>
           </div>
         {:else}
-          {#each events as event}
-            <div class="event-card">
-              <span class="event-date">{formatEventDate(event.start)}</span>
-              <h3>{event.summary}</h3>
-              {#if event.description}<p>{event.description}</p>{/if}
-            </div>
-          {/each}
+          <StoryCarousel ariaLabel="Upcoming events" items={events.map((event) => ({ image: orderedHomeImages[0]?.[1] ?? '/assets/logos/logo.png', eyebrow: formatEventDate(event.start), title: event.summary, description: event.description ?? 'Join us for the next club event.' }))} />
         {/if}
       </div>
       <div class="events-cta">
@@ -140,40 +126,10 @@
         </div>
       </div>
       <div class="overview-cards">
-        <div class="stat-card cs-club-card">
-          <strong>Computer Science Club</strong>
-          <p>Weekly presentations</p>
-        </div>
-        <div class="subclubs-row">
-          <div class="subclub-card">
-            <strong>Competitive Programming</strong>
-            <p>Contests & practice</p>
-          </div>
-          <div class="subclub-card">
-            <strong>AI</strong>
-            <p>Machine learning topics</p>
-          </div>
-        </div>
-        <div class="subclubs-row">
-          <div class="subclub-card">
-            <strong>Girls Who Code</strong>
-            <p>Women-only chapter of Girls Who Code nonprofit</p>
-          </div>
-          <div class="subclub-card">
-            <strong>Honor Society</strong>
-            <p>Academic excellence</p>
-          </div>
-        </div>
-        <div class="subclubs-row">
-          <div class="subclub-card">
-            <strong>App Development</strong>
-            <p>Front-end & back-end app development</p>
-          </div>
-          <div class="subclub-card">
-            <strong>And More???</strong>
-            <p>Talk to us to start your own!</p>
-          </div>
-        </div>
+        <div class="stat-card cs-club-card"><strong>Computer Science Club</strong><p>Weekly presentations</p></div>
+        <div class="subclubs-row"><div class="subclub-card"><strong>Competitive Programming</strong><p>Contests & practice</p></div><div class="subclub-card"><strong>AI</strong><p>Machine learning topics</p></div></div>
+        <div class="subclubs-row"><div class="subclub-card"><strong>Girls Who Code</strong><p>Women-only chapter</p></div><div class="subclub-card"><strong>Honor Society</strong><p>Academic excellence</p></div></div>
+        <div class="subclubs-row"><div class="subclub-card"><strong>App Development</strong><p>Front-end & back-end</p></div><div class="subclub-card"><strong>And More</strong><p>Start your own subclub</p></div></div>
       </div>
     </div>
   </section>
@@ -206,10 +162,20 @@
 
 <style>
   .hero-section {
-    padding: 3rem 0;
+    position: relative;
+    min-height: 680px;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--color-bg);
   }
 
+  .hero-section :global(.particle-logo) { z-index: 0; }
+
   .hero-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: 2rem;
@@ -229,88 +195,37 @@
     gap: 1rem;
   }
 
-  .hero-card {
-    padding: 1.5rem;
-    background: var(--color-surface);
-  }
-
-  .hero-logo-wrap {
+  .hero-facts {
     display: grid;
-    place-items: center;
-    min-height: 240px;
-  }
-
-  .hero-logo {
-    width: min(80%, 420px);
-    aspect-ratio: 1;
-    object-fit: contain;
-    padding: 1.5rem;
-  }
-
-  .hero-stat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.9rem;
-    margin-top: 1rem;
-  }
-
-  .hero-stat {
-    padding: 1rem;
-    background: var(--color-orange);
-    color: var(--color-black);
-    border: 3px solid var(--color-orange);
-  }
-
-  .hero-stat strong {
-    display: block;
-    margin-bottom: 0.35rem;
-    font-size: 1.2rem;
-  }
-
-  .hero-stat p {
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.75rem;
-    opacity: 0.92;
-  }
-
-  .achievements-strip {
-    padding: 2rem 0;
-  }
-
-  .achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    max-width: 360px;
+    justify-self: end;
   }
 
-  .achievement-card {
-    padding: 1.5rem;
-    text-align: center;
-    background: var(--color-orange);
-    color: var(--color-black);
-    border: 3px solid var(--color-orange);
+  .hero-fact {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1rem 0 1rem 1.2rem;
+    border-left: 2px solid rgba(255, 107, 44, 0.7);
+    background: rgba(13, 13, 13, 0.54);
+    backdrop-filter: blur(4px);
   }
 
-  .achievement-card strong {
-    display: block;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1;
-    margin-bottom: 0.25rem;
+  .hero-fact > span {
+    color: var(--color-orange);
+    font-family: var(--font-mono);
+    font-weight: 700;
   }
 
-  .achievement-card p {
-    margin: 0;
-    font-size: 0.85rem;
-    opacity: 0.9;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
+  .hero-fact strong { display: block; font-size: 1.2rem; }
+  .hero-fact p { margin: 0.2rem 0 0; color: var(--color-text-muted); }
 
   .events-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    display: block;
+    width: 100vw;
+    margin-left: calc((100% - 100vw) / 2);
   }
 
   .event-card {
@@ -425,18 +340,19 @@
     .hero-grid {
       grid-template-columns: 1fr;
     }
-    .achievements-grid,
-    .events-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   @media (max-width: 768px) {
-    .hero-stat-grid {
-      grid-template-columns: 1fr;
+    .hero-facts {
+      justify-self: stretch;
+      max-width: none;
     }
-    .achievements-grid,
-    .events-grid {
+
+    .hero-section {
+      min-height: 0;
+    }
+
+    .hero-facts {
       grid-template-columns: 1fr;
     }
   }

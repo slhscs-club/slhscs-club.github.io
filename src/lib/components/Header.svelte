@@ -12,6 +12,7 @@
     { href: '/about', label: 'About' },
     { href: '/calendar', label: 'Calendar' },
     { href: '/competitions', label: 'Competitions' },
+    { href: '/opportunities', label: 'Opportunities' },
     { href: '/resources', label: 'Resources' },
     { href: '/gallery', label: 'Gallery' }
   ];

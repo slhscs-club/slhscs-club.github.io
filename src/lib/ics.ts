@@ -209,5 +209,5 @@ export function getEventType(summary: string, description?: string): string {
 }
 
 export function getEventColor(type: string): string {
-  return type === 'cp' || type === 'special' ? 'color-blue' : 'color-orange';
+  return 'color-orange';
 }

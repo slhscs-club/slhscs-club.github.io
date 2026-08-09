@@ -2,6 +2,17 @@
   import Shell from '$lib/components/Shell.svelte';
   import PageHero from '$lib/components/PageHero.svelte';
   import CTACard from '$lib/components/CTACard.svelte';
+
+  const attended = [
+    ['HP Code Wars', 'Annual contest hosted by Hewlett Packard'],
+    ['USACO', 'Online contests throughout the year'],
+    ['UIL CS', 'We frequently advance to State'],
+    ['Local School Contests', 'Hosted by neighboring schools']
+  ];
+  const hosted = [
+    ['Annual October Contest', 'Our national contest with 350+ participants'],
+    ['UIL Invitational', 'A competitive meet hosted by SLHS CS Club']
+  ];
 </script>
 
 <svelte:head>
@@ -14,37 +25,19 @@
 
   <section class="section">
     <div class="container">
-      <h2 class="section-title">Local Contests</h2>
+      <h2 class="section-title">Attended Competitions</h2>
       <p>
         We attend several local computer science contests throughout the year hosted by neighboring schools. Teams of 3 program on one computer to complete a packet of programming problems (while eating pizza and candy). They're a fun way to spend a Saturday and improve your problem solving skills.
       </p>
-      <div class="contest-list">
-        <div class="contest-card color-orange">
-          <h3>HP Code Wars</h3>
-          <p>Annual contest hosted by Hewlett Packard</p>
-        </div>
-        <div class="contest-card color-orange">
-          <h3>USACO</h3>
-          <p>USA Computing Olympiad - online contests throughout the year</p>
-        </div>
-        <div class="contest-card color-orange">
-          <h3>UIL CS</h3>
-          <p>University Interscholastic League - we frequently advance to State</p>
-        </div>
-        <div class="contest-card color-orange">
-          <h3>Local School Contests</h3>
-          <p>Hosted by nearby schools, in the district or otherwise</p>
-        </div>
-      </div>
+      <div class="contest-list">{#each attended as contest}<div class="contest-card"><h3>{contest[0]}</h3><p>{contest[1]}</p></div>{/each}</div>
     </div>
   </section>
 
   <section class="section national-band">
     <div class="container">
-      <h2 class="section-title">Annual October Contest</h2>
-      <p>
-        Every year our annual October contest is hosted online and in-person with over 350 people in attendance. The contest is produced entirely by the CS Club and every year we need problem writers, testers, judges, and other volunteers to help put the event together.
-      </p>
+      <h2 class="section-title">Hosted Competitions</h2>
+      <div class="contest-list">{#each hosted as contest}<div class="contest-card"><h3>{contest[0]}</h3><p>{contest[1]}</p></div>{/each}</div>
+      <p>These events are produced by club members. We need problem writers, testers, judges, and volunteers to help put them together.</p>
       <p class="mono-text">View our contest schedule <a href="https://www.apluscompsci.com/cs_cont_list.htm" target="_blank" rel="noopener noreferrer">here</a>.</p>
     </div>
   </section>
@@ -65,9 +58,10 @@
 
   .contest-card {
     padding: 1.5rem;
-    border: 3px solid var(--accent, var(--color-orange));
-    background: var(--accent, var(--color-surface));
-    color: var(--accent-text, var(--color-white));
+    border: 1px solid var(--color-blue);
+    border-top: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
   }
 
   .contest-card h3 {

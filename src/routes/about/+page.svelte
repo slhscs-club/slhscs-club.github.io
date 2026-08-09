@@ -3,6 +3,14 @@
   import PageHero from '$lib/components/PageHero.svelte';
   import CTACard from '$lib/components/CTACard.svelte';
   import Carousel from '$lib/components/Carousel.svelte';
+  import CountUp from '$lib/components/CountUp.svelte';
+
+  const achievements = [
+    { prefix: '', num: 4, suffix: 'x', label: 'UIL State Championships' },
+    { prefix: '', num: 20, suffix: '+', label: 'Individual UIL State Attendees' },
+    { prefix: '≈', num: 15, suffix: '', label: 'Years Running' },
+    { prefix: '', num: 50, suffix: '+', label: 'Honor Society Members' }
+  ];
 
   const officerImages = import.meta.glob(
     '$lib/assets/officers/*.{jpg,jpeg,png,gif,webp,avif}',
@@ -91,6 +99,17 @@
     </div>
   </section>
 
+  <section class="section section-tight achievements-strip">
+    <div class="container achievements-grid">
+      {#each achievements as ach}
+        <div class="achievement-card">
+          <strong>{ach.prefix}<CountUp from={0} to={ach.num} separator="" direction="up" duration={0.8} />{ach.suffix}</strong>
+          <p>{ach.label}</p>
+        </div>
+      {/each}
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <h2 class="section-title">Frequently Asked Questions</h2>
@@ -127,6 +146,22 @@
     background: rgba(255, 255, 255, 0.02);
   }
 
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .achievement-card {
+    padding: 1.4rem;
+    background: var(--color-navy, #15233f);
+    color: var(--color-white);
+    border-top: 3px solid var(--color-orange);
+  }
+
+  .achievement-card strong { display: block; font-size: 2rem; color: var(--color-orange); }
+  .achievement-card p { margin: .35rem 0 0; }
+
   .structure-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -135,9 +170,10 @@
 
   .structure-card {
     padding: 1.5rem;
-    border: 3px solid var(--accent, var(--color-orange));
-    background: var(--accent, var(--color-surface));
-    color: var(--accent-text, var(--color-white));
+    border: 1px solid var(--color-blue);
+    border-top: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
   }
 
   .structure-card h3 {
@@ -156,15 +192,16 @@
 
   .faq-item {
     padding: 1.2rem;
-    border: 3px solid var(--accent, var(--color-orange));
-    background: var(--accent, var(--color-surface));
-    color: var(--accent-text, var(--color-white));
+    border: 1px solid var(--color-blue);
+    border-left: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
     box-shadow: var(--orange-shadow);
   }
 
   .faq-item h3 {
     margin: 0 0 0.5rem;
-    color: var(--color-black);
+    color: var(--color-text);
   }
 
   .faq-item p {
@@ -172,8 +209,13 @@
   }
 
   @media (max-width: 1024px) {
+    .achievements-grid { grid-template-columns: repeat(2, 1fr); }
     .structure-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  @media (max-width: 600px) {
+    .achievements-grid { grid-template-columns: 1fr; }
   }
 </style>
