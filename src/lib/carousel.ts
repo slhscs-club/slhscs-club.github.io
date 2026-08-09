@@ -12,7 +12,7 @@ export function createCarouselState(totalSlides: number, visibleSlides: number =
   return {
     currentIndex: 0,
     totalSlides,
-    maxIndex: totalSlides - visibleSlides,
+    maxIndex: Math.max(0, totalSlides - visibleSlides),
     dragStartX: 0,
     dragDeltaX: 0,
     isDragging: false,

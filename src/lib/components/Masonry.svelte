@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { gsap } from 'gsap';
+	import { gsap } from 'gsap/dist/gsap';
 	import type { LightboxImage } from '$lib/lightbox';
 
 	type Props = {
@@ -101,13 +101,20 @@
 				(item) =>
 					new Promise<void>((resolve) => {
 						const img = new Image();
+						let settled = false;
+						const finish = () => {
+							if (settled) return;
+							settled = true;
+							resolve();
+						};
 						img.src = item.img;
 						img.onload = () => {
 							const ratio = img.naturalHeight / img.naturalWidth;
 							ratios[item.id] = Number.isFinite(ratio) && ratio > 0 ? ratio : DEFAULT_RATIO;
-							resolve();
+							finish();
 						};
-						img.onerror = () => resolve();
+						img.onerror = finish;
+						setTimeout(finish, 10_000);
 					})
 			)
 		);
@@ -240,7 +247,7 @@
 	}
 
 	.masonry-card:focus-visible .masonry-card-inner {
-		outline: 3px solid var(--color-blue);
+		outline: 3px solid var(--color-orange);
 		outline-offset: 3px;
 	}
 
@@ -253,13 +260,16 @@
 		border-radius: 10px;
 		box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.2);
 		overflow: hidden;
+		transition: transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease;
 	}
+
+	.masonry-card:hover .masonry-card-inner { transform: scale(1.045) skewX(-1deg); filter: saturate(1.15) contrast(1.04); }
 
 	.color-overlay {
 		position: absolute;
 		inset: 0;
 		border-radius: 10px;
-		background: linear-gradient(135deg, rgba(255, 107, 44, 0.45), rgba(65, 105, 225, 0.45));
+		background: linear-gradient(135deg, rgba(255, 107, 44, 0.45), rgba(21, 35, 63, 0.45));
 		opacity: 0;
 		pointer-events: none;
 	}

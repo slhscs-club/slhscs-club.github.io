@@ -53,9 +53,10 @@
   .resource-card {
     display: block;
     padding: 1.5rem;
-    border: 3px solid var(--accent, var(--color-orange));
-    background: var(--accent, var(--color-surface));
-    color: var(--accent-text, var(--color-black));
+    border: 1px solid var(--color-blue);
+    border-top: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
     text-decoration: none;
     transition: transform 0.15s var(--ease-hover), box-shadow 0.15s var(--ease-hover);
   }
