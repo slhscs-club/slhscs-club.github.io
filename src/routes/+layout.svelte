@@ -1,14 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { onNavigate, afterNavigate } from '$app/navigation';
-  import { initPerf, isLite, perfTier } from '$lib/perf';
   import '../app.css';
 
   let frame = 0;
   let latestEvent: PointerEvent | null = null;
   let cursor: HTMLElement | null = null;
   let observer: IntersectionObserver | null = null;
-  /** Pre-collected list avoids querySelectorAll inside the pointermove handler. */
   let magTiltEls: HTMLElement[] = [];
 
   const prefersReduced = () =>
@@ -32,10 +30,8 @@
       { threshold: 0.12 }
     );
     document.querySelectorAll('.section, .btn, .carousel-slide, .event-row, .section-title, .page-title').forEach((el) => observer?.observe(el));
-    if (!isLite()) {
-      document.querySelectorAll('.btn, .join-btn').forEach((el) => el.classList.add('magnetic'));
-      document.querySelectorAll('.story-card, .carousel-card, .event-row, .achievement-card').forEach((el) => el.classList.add('tilt-card'));
-    }
+    document.querySelectorAll('.btn, .join-btn').forEach((el) => el.classList.add('magnetic'));
+    document.querySelectorAll('.story-card, .carousel-card, .event-row, .achievement-card').forEach((el) => el.classList.add('tilt-card'));
     magTiltEls = Array.from(document.querySelectorAll<HTMLElement>('.magnetic, .tilt-card'));
   }
 
@@ -71,7 +67,6 @@
   };
 
   onMount(() => {
-    initPerf();
     cursor = document.createElement('span');
     cursor.className = 'cursor-dot';
     document.body.appendChild(cursor);

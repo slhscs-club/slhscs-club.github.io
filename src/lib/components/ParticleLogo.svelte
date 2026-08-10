@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { isLite, perfTier } from '$lib/perf';
 
   let canvas: HTMLCanvasElement;
 
@@ -10,7 +9,6 @@
     const ctx = context;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const lite = isLite();
 
     interface Particle {
       x: number; y: number;
@@ -96,7 +94,7 @@
       canvas.height = Math.round(canvas.clientHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (image.complete && image.naturalWidth > 0) {
-        if (reducedMotion || lite) {
+        if (reducedMotion) {
           drawStaticLogo();
         } else {
           drawStaticLogo();

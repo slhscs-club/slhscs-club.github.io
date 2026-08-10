@@ -151,7 +151,7 @@ textarea {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(32rem 20rem at 78% 42%, rgba(38, 54, 80, .3), transparent 68%), radial-gradient(22rem 14rem at 17% 80%, rgba(255, 107, 44, .09), transparent 70%);
+  
   animation: mesh-drift 14s ease-in-out infinite alternate;
   pointer-events: none;
 }
@@ -165,37 +165,15 @@ textarea {
   position: relative;
   overflow: hidden;
 }
-.footer-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -40% -50%;
-  background:
-    radial-gradient(40rem 18rem at 20% 30%, rgba(255, 107, 44, .12), transparent 70%),
-    radial-gradient(34rem 20rem at 80% 80%, rgba(38, 54, 80, .4), transparent 70%);
-  animation: gradient-pan 18s ease-in-out infinite alternate;
-  pointer-events: none;
-  will-change: transform;
-}
+.footer-wrap::before { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 
 /* Lite mode: mobile/low-end — kill all animations and heavy effects */
-html.perf-lite *, html.perf-lite *::before, html.perf-lite *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-html.perf-lite .hero-section::after { display: none; }
-html.perf-lite .footer-wrap::before { display: none; }
-html.perf-lite .particle-logo { display: none !important; }
-html.perf-lite .word-reveal { opacity: 1; transform: none; }
 
 /* Reduced mode: keep structure, drop heavy ambient animations */
-html.perf-reduced .hero-section::after { animation-duration: 0.01ms !important; }
-html.perf-reduced .footer-wrap::before { animation-duration: 0.01ms !important; }
-html.perf-reduced .word-reveal { opacity: 1; transform: none; transition: none; }
 
 /* Page transitions (View Transitions API, opt-in in layout) */
 ::view-transition-old(root) { animation: vt-out .28s ease both; }

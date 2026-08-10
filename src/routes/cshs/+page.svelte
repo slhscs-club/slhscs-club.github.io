@@ -138,16 +138,6 @@
 
 <style>
   :global(html.theme-cshs), :global(html.theme-cshs body) { background: #120e0a; }
-  :global(html.theme-cshs body) {
-    background-image:
-      linear-gradient(rgba(184,148,58,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(184,148,58,0.025) 1px, transparent 1px),
-      radial-gradient(ellipse at 50% 10%, rgba(196,162,72,0.06) 0%, transparent 65%),
-      radial-gradient(ellipse at 30% 85%, rgba(255,107,44,0.04) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 70%, rgba(38,54,80,0.06) 0%, transparent 50%);
-    background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%, 100% 100%;
-    background-attachment: fixed;
-  }
   :global(html.theme-cshs .sticky-top) { backdrop-filter: none; }
   :global(html.theme-cshs header) { background: rgba(18,14,10,0.94); border-bottom: 2px solid rgba(184,148,58,0.25); }
   :global(html.theme-cshs header a), :global(html.theme-cshs header i), :global(html.theme-cshs header button), :global(html.theme-cshs header .logo) { color: #c9b87a !important; }
@@ -167,7 +157,7 @@
   :global(html.theme-cshs .main-shell) { padding-bottom: 0; }
 
   .fresco-root { width: min(780px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 3rem; }
-  .fresco-meander { height: 16px; background: repeating-linear-gradient(90deg, #b8943a 0px, #b8943a 5px, transparent 5px, transparent 10px, #b8943a 10px, #b8943a 13px, transparent 13px, transparent 18px); background-size: 72px 100%; opacity: 0.3; margin: 0.4rem 0; }
+  .fresco-meander { height: 2px; background: rgba(184,148,58,0.3); margin: 0.8rem 0; }
   .fresco-banner { text-align: center; padding: 2rem 0 1rem; }
   .fresco-crest { display: flex; justify-content: center; margin-bottom: 1.2rem; }
   .fresco-crest-outer { width: 100px; height: 100px; border: 3px solid #b8943a; display: grid; place-items: center; box-shadow: 0 0 40px rgba(184,148,58,0.1), inset 0 0 20px rgba(184,148,58,0.05); }
@@ -177,7 +167,7 @@
   .fresco-banner h1 { margin: 0; font-family: "IBM Plex Mono", monospace; font-size: clamp(2.2rem, 4.5vw, 3.6rem); line-height: 1.1; color: #e8d8b0; letter-spacing: 0.01em; }
   .fresco-subtitle { display: flex; align-items: center; gap: 1rem; justify-content: center; margin: 0.6rem 0 0; }
   .fresco-subtitle p { margin: 0; color: #b8943a; font-size: 0.82rem; letter-spacing: 0.2em; text-transform: uppercase; }
-  .fresco-rule { flex: 1; max-width: 60px; height: 1px; background: linear-gradient(to right, transparent, rgba(184,148,58,0.4), transparent); }
+  .fresco-rule { flex: 1; max-width: 60px; height: 1px; background: rgba(184,148,58,0.3); }
 
   .fresco-intro { text-align: center; padding: 1rem 1.5rem; color: #a69572; line-height: 1.6; font-size: 0.92rem; }
 

@@ -102,7 +102,7 @@
 		position: absolute;
 		inset: 0;
 		border-radius: 8px;
-		background: linear-gradient(135deg, rgba(255,107,44,0.35), rgba(38,54,80,0.4));
+		background: rgba(255,107,44,0.4);
 		opacity: 0;
 		transition: opacity .4s ease;
 		pointer-events: none;
