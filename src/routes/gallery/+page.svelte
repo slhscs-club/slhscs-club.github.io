@@ -31,7 +31,7 @@
 
 	<section class="section">
 		<div class="container">
-			<Masonry images={galleryImages} onOpen={onOpenLightbox} colorShiftOnHover animateFrom="bottom" />
+			<Masonry images={galleryImages} onOpen={onOpenLightbox} colorShiftOnHover />
 		</div>
 	</section>
 
