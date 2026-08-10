@@ -8,6 +8,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>CS Honor Society | SLHS CS Club</title>
+</svelte:head>
+
 <Shell activePage="">
   <div class="fresco-root">
     <div class="fresco-banner">
@@ -100,7 +104,7 @@
             <span>4 volunteer hours</span><span>40 pts</span>
             <span class="fresco-ex-total">180 pts</span>
           </div>
-          <p>They comfortably clear the 150-point returning threshold without extra points for being a competitor. Their competitions simply provide opportunities to earn.</p>
+          <p>No extra points for being a competitor — competitions simply provide opportunities to earn.</p>
         </div>
         <div class="fresco-ex">
           <h3>Project-Oriented Student</h3>

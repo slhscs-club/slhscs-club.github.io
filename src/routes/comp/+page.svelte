@@ -8,6 +8,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>Competitive Programming | SLHS CS Club</title>
+</svelte:head>
+
 <Shell activePage="">
   <div class="ide-root">
     <div class="ide-hero">
