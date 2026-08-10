@@ -8,6 +8,8 @@
     if (!context) return;
     const ctx = context;
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     interface Particle {
       x: number; y: number;
       destX: number; destY: number;
@@ -15,8 +17,6 @@
       color: string;
     }
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const R = Math.min(devicePixelRatio || 1, 2);
     const colors = ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#c7ccd8', '#c7ccd8'];
     const pointer = { x: -9999, y: -9999 };
     const rect = { left: 0, top: 0, width: 0, height: 0 };
@@ -32,6 +32,15 @@
     const image = new Image();
     image.decoding = 'async';
     image.src = '/assets/logos/logo.png';
+
+    // Adaptive settings based on screen size.
+    function getSettings() {
+      const w = canvas.clientWidth;
+      const dpr = Math.min(devicePixelRatio || 1, w < 600 ? 1.25 : 1.5);
+      // Fewer, larger dots on small screens for cheap rendering.
+      const step = w < 480 ? 7 : w < 768 ? 6 : 5;
+      return { dpr, step };
+    }
 
     function updateRect() {
       const r = canvas.getBoundingClientRect();
@@ -52,7 +61,7 @@
       ctx.drawImage(image, logoLeft, logoTop, logoSize, logoSize);
     }
 
-    function buildParticles() {
+    function buildParticles(step: number) {
       geometry();
       const sample = document.createElement('canvas');
       sample.width = 512; sample.height = 512;
@@ -60,14 +69,12 @@
       if (!sctx) return;
       sctx.drawImage(image, 0, 0, 512, 512);
       const data = sctx.getImageData(0, 0, 512, 512).data;
-      const step = 5;
       particles = [];
       for (let gx = 0; gx < 512; gx += step) {
         for (let gy = 0; gy < 512; gy += step) {
           if (data[(gx + gy * 512) * 4 + 3] > 25) {
             const destX = logoLeft + (gx / 512) * logoSize;
             const destY = logoTop + (gy / 512) * logoSize;
-            // Start at exact destination — logo appears complete immediately.
             particles.push({
               x: destX, y: destY,
               destX, destY,
@@ -82,20 +89,20 @@
 
     function resize() {
       updateRect();
-      canvas.width = Math.round(canvas.clientWidth * R);
-      canvas.height = Math.round(canvas.clientHeight * R);
-      ctx.setTransform(R, 0, 0, R, 0, 0);
+      const { dpr, step } = getSettings();
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (image.complete && image.naturalWidth > 0) {
         if (reducedMotion) {
           drawStaticLogo();
         } else {
-          drawStaticLogo();        // immediate placeholder
+          drawStaticLogo();
           setTimeout(() => {
-            if (!document.hidden) { buildParticles(); start(); }
-            // After the static draw settles, gently breathe the logo to life.
+            if (!document.hidden) { buildParticles(step); start(); }
             setTimeout(() => {
               if (!frozen) return;
-              for (const p of particles) { p.vx += (Math.random() - 0.5) * 0.7; p.vy += (Math.random() - 0.5) * 0.7; }
+              for (const p of particles) { p.vx += (Math.random() - 0.5) * 0.5; p.vy += (Math.random() - 0.5) * 0.5; }
               start();
             }, 600);
           }, 150);
@@ -105,7 +112,7 @@
 
     function isSettled() {
       for (const p of particles) {
-        if ((p.vx < 0 ? -p.vx : p.vx) + (p.vy < 0 ? -p.vy : p.vy) > 0.18) return false;
+        if ((p.vx < 0 ? -p.vx : p.vx) + (p.vy < 0 ? -p.vy : p.vy) > 0.25) return false;
       }
       return true;
     }
@@ -117,15 +124,13 @@
       const now = performance.now();
       const pointerMoving = now - lastPointerMove < 220;
       const push = pointerNear ? radius * 80 : 0;
+      const friction = 0.9;
 
-      // Two-pass render — no allocations per frame.
       ctx.fillStyle = '#ffffff';
       for (const p of particles) {
-        // Stiffer spring → faster settle.
-        const ax = (p.destX - p.x) / 50;
-        const ay = (p.destY - p.y) / 50;
-        p.vx += ax; p.vy += ay;
-        p.vx *= 0.92; p.vy *= 0.92;
+        // Cheaper spring — no division.
+        p.vx = p.vx * friction + (p.destX - p.x) * 0.06;
+        p.vy = p.vy * friction + (p.destY - p.y) * 0.06;
         if (push > 0) {
           const mx = p.x - pointer.x, my = p.y - pointer.y;
           const d2 = mx * mx + my * my;
