@@ -27,8 +27,8 @@
         </div>
         <div class="benefit-card color-orange">
           <i class="fa-solid fa-code"></i>
-          <h3>CP Practice</h3>
-          <p>Weekly competitive programming sessions to sharpen your problem-solving skills.</p>
+           <h3>Comp Prog Practice</h3>
+            <p>Weekly competitive programming sessions to sharpen your problem-solving skills.</p>
         </div>
         <div class="benefit-card color-orange">
           <i class="fa-solid fa-trophy"></i>
@@ -118,9 +118,10 @@
   .requirements-card {
     padding: 1.5rem;
     margin-top: 1.5rem;
-    border: 3px solid var(--color-orange);
-    background: var(--color-orange);
-    color: var(--color-black);
+    border: 1px solid var(--color-navy);
+    border-top: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
   }
 
   .requirements-card h3 {
@@ -139,11 +140,11 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .requirements-card i {
-    color: var(--color-black);
+    color: var(--color-orange);
   }
 
   .signup-card {
