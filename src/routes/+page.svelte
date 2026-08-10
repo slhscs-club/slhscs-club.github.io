@@ -426,6 +426,12 @@
       min-height: 0;
     }
 
+    .hero-copy {
+      background: rgba(10, 12, 16, 0.78);
+      padding: 1rem;
+      border-left: 3px solid var(--color-orange);
+    }
+
     .hero-facts {
       grid-template-columns: 1fr;
     }

@@ -137,8 +137,8 @@
 </Shell>
 
 <style>
-  html.theme-cshs, html.theme-cshs body { background: #120e0a; }
-  html.theme-cshs body {
+  :global(html.theme-cshs), :global(html.theme-cshs body) { background: #120e0a; }
+  :global(html.theme-cshs body) {
     background-image:
       linear-gradient(rgba(184,148,58,0.025) 1px, transparent 1px),
       linear-gradient(90deg, rgba(184,148,58,0.025) 1px, transparent 1px),
@@ -148,23 +148,23 @@
     background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%, 100% 100%;
     background-attachment: fixed;
   }
-  html.theme-cshs .sticky-top { backdrop-filter: none; }
-  html.theme-cshs header { background: rgba(18,14,10,0.94); border-bottom: 2px solid rgba(184,148,58,0.25); }
-  html.theme-cshs header a, html.theme-cshs header i, html.theme-cshs header button, html.theme-cshs header .logo { color: #c9b87a !important; }
-  html.theme-cshs header .join-btn { background: #b8943a; border-color: #b8943a; color: #120e0a !important; }
-  html.theme-cshs header .icon-btn { border-color: rgba(184,148,58,0.35); background: rgba(18,14,10,0.8); }
-  html.theme-cshs .nav-indicator { background: #d4af37; }
-  html.theme-cshs .footer-wrap { background: rgba(14,11,7,0.95); border-top: 2px solid rgba(184,148,58,0.25); }
-  html.theme-cshs .footer-wrap::before { display: none; }
-  html.theme-cshs footer .footer-brand { color: #c9b87a; }
-  html.theme-cshs footer .footer-links a { color: #8b7a56; }
-  html.theme-cshs footer .footer-links a:hover { color: #d4af37; }
-  html.theme-cshs .btn-primary { background: #b8943a; border-color: #b8943a; color: #120e0a !important; box-shadow: 4px 4px 0 rgba(184,148,58,0.4); }
-  html.theme-cshs .btn-primary:hover { transform: translate(-3px,-3px); box-shadow: 6px 6px 0 rgba(184,148,58,0.5); }
-  html.theme-cshs .btn-secondary { border-color: #6b5f47; color: #c9b87a; box-shadow: 4px 4px 0 rgba(107,95,71,0.4); }
-  html.theme-cshs .btn-secondary:hover { background: #2a2318; color: #d4af37; border-color: #b8943a; box-shadow: 6px 6px 0 rgba(184,148,58,0.4); }
-  html.theme-cshs .cta-card { display: none; }
-  html.theme-cshs .main-shell { padding-bottom: 0; }
+  :global(html.theme-cshs .sticky-top) { backdrop-filter: none; }
+  :global(html.theme-cshs header) { background: rgba(18,14,10,0.94); border-bottom: 2px solid rgba(184,148,58,0.25); }
+  :global(html.theme-cshs header a), :global(html.theme-cshs header i), :global(html.theme-cshs header button), :global(html.theme-cshs header .logo) { color: #c9b87a !important; }
+  :global(html.theme-cshs header .join-btn) { background: #b8943a; border-color: #b8943a; color: #120e0a !important; }
+  :global(html.theme-cshs header .icon-btn) { border-color: rgba(184,148,58,0.35); background: rgba(18,14,10,0.8); }
+  :global(html.theme-cshs .nav-indicator) { background: #d4af37; }
+  :global(html.theme-cshs .footer-wrap) { background: rgba(14,11,7,0.95); border-top: 2px solid rgba(184,148,58,0.25); }
+  :global(html.theme-cshs .footer-wrap::before) { display: none; }
+  :global(html.theme-cshs footer .footer-brand) { color: #c9b87a; }
+  :global(html.theme-cshs footer .footer-links a) { color: #8b7a56; }
+  :global(html.theme-cshs footer .footer-links a:hover) { color: #d4af37; }
+  :global(html.theme-cshs .btn-primary) { background: #b8943a; border-color: #b8943a; color: #120e0a !important; box-shadow: 4px 4px 0 rgba(184,148,58,0.4); }
+  :global(html.theme-cshs .btn-primary:hover) { transform: translate(-3px,-3px); box-shadow: 6px 6px 0 rgba(184,148,58,0.5); }
+  :global(html.theme-cshs .btn-secondary) { border-color: #6b5f47; color: #c9b87a; box-shadow: 4px 4px 0 rgba(107,95,71,0.4); }
+  :global(html.theme-cshs .btn-secondary:hover) { background: #2a2318; color: #d4af37; border-color: #b8943a; box-shadow: 6px 6px 0 rgba(184,148,58,0.4); }
+  :global(html.theme-cshs .cta-card) { display: none; }
+  :global(html.theme-cshs .main-shell) { padding-bottom: 0; }
 
   .fresco-root { width: min(780px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 3rem; }
   .fresco-meander { height: 16px; background: repeating-linear-gradient(90deg, #b8943a 0px, #b8943a 5px, transparent 5px, transparent 10px, #b8943a 10px, #b8943a 13px, transparent 13px, transparent 18px); background-size: 72px 100%; opacity: 0.3; margin: 0.4rem 0; }
