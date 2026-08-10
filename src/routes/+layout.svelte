@@ -111,6 +111,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    @font-face { font-family: 'Seven Segment'; src: url('/fonts/Seven Segment.ttf') format('truetype'); font-display: swap; }
+  </style>
 </svelte:head>
 
 <slot />

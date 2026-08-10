@@ -29,10 +29,13 @@
   <div class:dragging bind:this={track} class="story-track" role="listbox" aria-label={ariaLabel} tabindex="0" onpointerdown={onPointerDown} onpointermove={onPointerMove} onpointerup={onPointerUp} onpointercancel={onPointerUp}>
     {#each items as item}
       <article class="story-card">
+        {#if item.image}
         <div class="story-image" style={`background-image: url('${item.image}')`}>
           <span class="story-eyebrow">{item.eyebrow}</span>
         </div>
+        {/if}
         <div class="story-content">
+          {#if !item.image}<span>{item.eyebrow}</span>{/if}
           <h3>{item.title}</h3>
           <p>{item.description}</p>
         </div>

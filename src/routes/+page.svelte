@@ -90,7 +90,7 @@
       {:else if events.length === 0}
         <div class="event-card"><span class="event-date">Soon</span><h3>Weekly Meetings</h3><p>Mondays at 2:45 PM in Room 1001</p></div>
       {:else}
-        <StoryCarousel ariaLabel="Upcoming events" items={events.map((event) => ({ image: orderedHomeImages[0]?.[1] ?? '/assets/logos/logo.png', eyebrow: formatEventDate(event.start), title: event.summary, description: event.description ?? 'Join us for the next club event.' }))} />
+        <StoryCarousel ariaLabel="Upcoming events" items={events.map((event) => ({ image: '', eyebrow: formatEventDate(event.start), title: event.summary, description: event.description ?? 'Join us for the next club event.' }))} />
       {/if}
     </div>
     <div class="container events-cta">
