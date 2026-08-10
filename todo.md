@@ -1,1 +1,1 @@
-[ ] - Fix Annual October Contest box
+[x] - Fix Annual October Contest box
