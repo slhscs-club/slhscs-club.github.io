@@ -230,9 +230,10 @@
 
   .hero-facts {
     display: grid;
-    gap: 1rem;
-    max-width: 360px;
-    justify-self: end;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    position: relative;
+    z-index: 2;
   }
 
   .hero-fact {
