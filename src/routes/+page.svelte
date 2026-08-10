@@ -40,10 +40,10 @@
   const orderedHomeImages = Object.entries(homeImages).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
 
   const subclubs = [
-    { icon: 'fa-code', title: 'Competitive Programming', description: 'Contests & practice' },
+    { icon: 'fa-code', title: 'Competitive Programming', description: 'Contests & practice', link: '/cp' },
     { icon: 'fa-robot', title: 'AI', description: 'Machine learning topics' },
     { icon: 'fa-people-group', title: 'Girls Who Code', description: 'Women-only chapter' },
-    { icon: 'fa-award', title: 'Honor Society', description: 'Academic excellence' },
+    { icon: 'fa-award', title: 'Honor Society', description: 'Academic excellence', link: '/cshs' },
     { icon: 'fa-mobile-screen', title: 'App Development', description: 'Front-end & back-end' },
     { icon: 'fa-plus', title: 'And More', description: 'Start your own subclub' }
   ];
@@ -142,11 +142,19 @@
         </div>
         <div class="subclubs-grid">
           {#each subclubs as sub}
-            <div class="subclub-card">
-              <i class="fa-solid {sub.icon}"></i>
-              <strong>{sub.title}</strong>
-              <p>{sub.description}</p>
-            </div>
+            {#if sub.link}
+              <a href={sub.link} class="subclub-card">
+                <i class="fa-solid {sub.icon}"></i>
+                <strong>{sub.title}</strong>
+                <p>{sub.description}</p>
+              </a>
+            {:else}
+              <div class="subclub-card">
+                <i class="fa-solid {sub.icon}"></i>
+                <strong>{sub.title}</strong>
+                <p>{sub.description}</p>
+              </div>
+            {/if}
           {/each}
         </div>
       </div>
@@ -426,7 +434,13 @@
       grid-template-columns: 1fr;
     }
 
-    .subclubs-grid {
+  a.subclub-card {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .subclubs-grid {
       grid-template-columns: 1fr;
     }
   }
