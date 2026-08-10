@@ -376,7 +376,7 @@
     border-top: 3px solid var(--color-orange);
     background: var(--color-surface);
     color: var(--color-text);
-    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, border-top-color .3s ease;
+    transition: transform .4s cubic-bezier(.175,.885,.32,1.275), box-shadow .4s ease, border-top-color .3s ease;
   }
 
   .subclub-card:hover {

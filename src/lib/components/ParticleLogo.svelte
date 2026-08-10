@@ -148,6 +148,25 @@
         if (p.color !== '#ffffff') ctx.fillRect(p.x, p.y, p.r, p.r);
       }
 
+      // Lightweight network: draw lines only when pointer is near, limited count.
+      if (pointerNear && pointerMoving) {
+        const conn = particles.filter(p => {
+          const d2 = (p.x - pointer.x) ** 2 + (p.y - pointer.y) ** 2;
+          return d2 < (push * push) * 1.2;
+        });
+        if (conn.length > 1) {
+          ctx.strokeStyle = 'rgba(255,107,44,0.09)';
+          ctx.lineWidth = 0.5;
+          const max = Math.min(conn.length, 80);
+          for (let i = 0; i < max - 1; i++) {
+            ctx.beginPath();
+            ctx.moveTo(conn[i].x, conn[i].y);
+            ctx.lineTo(conn[i + 1].x, conn[i + 1].y);
+            ctx.stroke();
+          }
+        }
+      }
+
       if (pointerNear && pointerMoving) {
         raf = requestAnimationFrame(render);
       } else if (isSettled()) {

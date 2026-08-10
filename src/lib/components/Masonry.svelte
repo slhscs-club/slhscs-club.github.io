@@ -268,7 +268,7 @@
 		transition: transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease;
 	}
 
-	.masonry-card:hover .masonry-card-inner { transform: scale(1.045) skewX(-1deg); filter: saturate(1.15) contrast(1.04); }
+	.masonry-card:hover .masonry-card-inner { transform: scale(1.05) skewX(-1.5deg) translateY(-3px); filter: saturate(1.2) contrast(1.05) brightness(1.08); }
 
 	.color-overlay {
 		position: absolute;

@@ -75,8 +75,8 @@
   }
 
   .story-card:hover .story-image {
-    transform: scale(1.05);
-    filter: saturate(1.08);
+    transform: scale(1.06) skewX(-0.5deg);
+    filter: saturate(1.12) brightness(1.06);
   }
 
   .story-eyebrow {
