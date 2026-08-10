@@ -4,7 +4,6 @@
   import Masonry from '$lib/components/Masonry.svelte';
   import Lightbox from '$lib/components/Lightbox.svelte';
   import ParticleLogo from '$lib/components/ParticleLogo.svelte';
-  import SegmentDisplay from '$lib/components/SegmentDisplay.svelte';
   import StoryCarousel from '$lib/components/StoryCarousel.svelte';
   import type { PageData } from './$types';
   import { formatEventDate } from '$lib/ics';
@@ -57,7 +56,7 @@
   <section class="section hero-section">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <h1 class="page-title"><SegmentDisplay text="SLHS Computer Science Club" /></h1>
+        <h1 class="page-title">SLHS Computer Science Club</h1>
         <p class="page-subtitle">
           Welcome to the <b>Seven Lakes High School Computer Science Club!</b> Join us to meet passionate students, grow your interest and knowledge in the field of computer science, and compete and create in a fun and welcoming community.
         </p>
