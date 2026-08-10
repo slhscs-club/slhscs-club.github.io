@@ -3,3 +3,6 @@ node_modules/
 Thumbs.db
 build/
 .svelte-kit/
+preview.log
+*.py
+shot-*.png
