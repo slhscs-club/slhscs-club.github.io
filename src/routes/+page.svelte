@@ -8,8 +8,9 @@
   import type { PageData } from './$types';
   import { formatEventDate } from '$lib/ics';
   import { openLightbox, closeLightbox, type LightboxImage } from '$lib/lightbox';
+  import { onMount } from 'svelte';
 
-  export let data: PageData;
+  let { data }: { data: PageData } = $props();
   const { highlights, events: serverEvents } = data;
 
   let selectedImage: LightboxImage | null = null;
@@ -34,14 +35,23 @@
     start: new Date(e.start)
   }));
   let loadingEvents = false;
+
   const homeImages = import.meta.glob('$lib/assets/home/*.{jpg,jpeg,png,webp}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
   const orderedHomeImages = Object.entries(homeImages).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
-  const activitySlides = [
-    ['Weekly meetings', 'Member-led presentations, demos, and discussions across every corner of CS.'],
-    ['Competitive programming', 'Practice together for UIL, USACO, HP CodeWars, and local contests.'],
-    ['Build and ship', 'Explore web, app, AI, and game development through practical projects.'],
-    ['Community first', 'Social events and subclubs make room for every interest and experience level.']
-  ].map(([title, description], index) => ({ image: orderedHomeImages[index % Math.max(1, orderedHomeImages.length)]?.[1] ?? '/assets/logos/logo.png', eyebrow: `0${index + 1}`, title, description }));
+
+  const subclubs = [
+    { icon: 'fa-code', title: 'Competitive Programming', description: 'Contests & practice' },
+    { icon: 'fa-robot', title: 'AI', description: 'Machine learning topics' },
+    { icon: 'fa-people-group', title: 'Girls Who Code', description: 'Women-only chapter' },
+    { icon: 'fa-award', title: 'Honor Society', description: 'Academic excellence' },
+    { icon: 'fa-mobile-screen', title: 'App Development', description: 'Front-end & back-end' },
+    { icon: 'fa-plus', title: 'And More', description: 'Start your own subclub' }
+  ];
+
+  let chargeIn = $state(false);
+  onMount(() => {
+    setTimeout(() => (chargeIn = true), 400);
+  });
 </script>
 
 <svelte:head>
@@ -66,7 +76,7 @@
           <a class="btn btn-secondary btn-large" href="/about"><i class="fa-solid fa-circle-info"></i> Learn More</a>
         </div>
       </div>
-      <div class="hero-facts" aria-label="Club details">
+      <div class="hero-facts" class:charged={chargeIn} aria-label="Club details">
         <div class="hero-fact">
           <span>01</span>
           <div><strong>Mondays</strong><p>at 2:45 PM</p></div>
@@ -87,26 +97,26 @@
     <div class="container">
       <h2 class="section-title">Upcoming Events</h2>
       <p class="section-lead">Here's a snapshot of what's coming up.</p>
-      <div class="events-grid">
-        {#if loadingEvents}
-          <div class="event-card">
-            <span class="event-date">Loading...</span>
-            <h3>Upcoming Events</h3>
-            <p>Fetching from calendar...</p>
-          </div>
-        {:else if events.length === 0}
-          <div class="event-card">
-            <span class="event-date">Soon</span>
-            <h3>Weekly Meetings</h3>
-            <p>Mondays at 2:45 PM in Room 1001</p>
-          </div>
-        {:else}
-          <StoryCarousel ariaLabel="Upcoming events" items={events.map((event) => ({ image: orderedHomeImages[0]?.[1] ?? '/assets/logos/logo.png', eyebrow: formatEventDate(event.start), title: event.summary, description: event.description ?? 'Join us for the next club event.' }))} />
-        {/if}
-      </div>
-      <div class="events-cta">
-        <a class="btn btn-secondary" href="/calendar"><i class="fa-solid fa-calendar"></i> View Full Calendar</a>
-      </div>
+    </div>
+    <div class="events-bleed">
+      {#if loadingEvents}
+        <div class="event-card">
+          <span class="event-date">Loading...</span>
+          <h3>Upcoming Events</h3>
+          <p>Fetching from calendar...</p>
+        </div>
+      {:else if events.length === 0}
+        <div class="event-card">
+          <span class="event-date">Soon</span>
+          <h3>Weekly Meetings</h3>
+          <p>Mondays at 2:45 PM in Room 1001</p>
+        </div>
+      {:else}
+        <StoryCarousel ariaLabel="Upcoming events" items={events.map((event) => ({ image: orderedHomeImages[0]?.[1] ?? '/assets/logos/logo.png', eyebrow: formatEventDate(event.start), title: event.summary, description: event.description ?? 'Join us for the next club event.' }))} />
+      {/if}
+    </div>
+    <div class="container events-cta">
+      <a class="btn btn-secondary" href="/calendar"><i class="fa-solid fa-calendar"></i> View Full Calendar</a>
     </div>
   </section>
 
@@ -126,10 +136,19 @@
         </div>
       </div>
       <div class="overview-cards">
-        <div class="stat-card cs-club-card"><strong>Computer Science Club</strong><p>Weekly presentations</p></div>
-        <div class="subclubs-row"><div class="subclub-card"><strong>Competitive Programming</strong><p>Contests & practice</p></div><div class="subclub-card"><strong>AI</strong><p>Machine learning topics</p></div></div>
-        <div class="subclubs-row"><div class="subclub-card"><strong>Girls Who Code</strong><p>Women-only chapter</p></div><div class="subclub-card"><strong>Honor Society</strong><p>Academic excellence</p></div></div>
-        <div class="subclubs-row"><div class="subclub-card"><strong>App Development</strong><p>Front-end & back-end</p></div><div class="subclub-card"><strong>And More</strong><p>Start your own subclub</p></div></div>
+        <div class="stat-card cs-club-card">
+          <i class="fa-solid fa-laptop-code"></i>
+          <div><strong>Computer Science Club</strong><p>Weekly presentations & community</p></div>
+        </div>
+        <div class="subclubs-grid">
+          {#each subclubs as sub}
+            <div class="subclub-card">
+              <i class="fa-solid {sub.icon}"></i>
+              <strong>{sub.title}</strong>
+              <p>{sub.description}</p>
+            </div>
+          {/each}
+        </div>
       </div>
     </div>
   </section>
@@ -185,6 +204,12 @@
   .hero-copy {
     display: grid;
     gap: 1.2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-copy .page-subtitle {
+    max-width: 40ch;
   }
 
   .hero-actions,
@@ -208,9 +233,21 @@
     gap: 1rem;
     align-items: start;
     padding: 1rem 0 1rem 1.2rem;
-    border-left: 2px solid rgba(255, 107, 44, 0.7);
-    background: rgba(13, 13, 13, 0.54);
-    backdrop-filter: blur(4px);
+    border-left: 3px solid var(--color-orange);
+    border-bottom: 1px solid var(--color-navy);
+    background: rgba(10, 12, 16, 0.78);
+    transform: translateX(80px);
+    opacity: 0;
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+  }
+
+  .hero-fact:nth-child(1) { transition-delay: 0s; }
+  .hero-fact:nth-child(2) { transition-delay: 0.12s; }
+  .hero-fact:nth-child(3) { transition-delay: 0.24s; }
+
+  .hero-facts.charged .hero-fact {
+    transform: translateX(0);
+    opacity: 1;
   }
 
   .hero-fact > span {
@@ -219,16 +256,20 @@
     font-weight: 700;
   }
 
-  .hero-fact strong { display: block; font-size: 1.2rem; }
+  .hero-fact strong { display: block; font-size: 1.2rem; color: var(--color-text); }
   .hero-fact p { margin: 0.2rem 0 0; color: var(--color-text-muted); }
 
-  .events-grid {
-    display: block;
+  /* Full-bleed break-out so the carousel spans the entire viewport width */
+  .events-bleed {
+    position: relative;
     width: 100vw;
-    margin-left: calc((100% - 100vw) / 2);
+    left: 50%;
+    margin-left: -50vw;
   }
 
   .event-card {
+    max-width: 420px;
+    margin: 0 auto;
     padding: 1.2rem;
     border: 3px solid var(--color-orange);
     background: var(--color-orange);
@@ -264,7 +305,7 @@
   .overview-grid {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: start;
   }
 
@@ -285,15 +326,24 @@
   }
 
   .cs-club-card {
-    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem;
     border: 3px solid var(--color-orange);
     background: var(--color-orange);
     color: var(--color-black);
+    box-shadow: var(--orange-shadow);
+  }
+
+  .cs-club-card i {
+    font-size: 1.8rem;
+    flex: 0 0 auto;
   }
 
   .cs-club-card strong {
     display: block;
-    font-size: 1rem;
+    font-size: 1.05rem;
     margin-bottom: 0.25rem;
   }
 
@@ -303,29 +353,45 @@
     opacity: 0.9;
   }
 
+  .subclubs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
   .subclub-card {
-    padding: 0.75rem 1rem;
-    border: 3px solid var(--color-white);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--color-navy);
+    border-top: 3px solid var(--color-orange);
     background: var(--color-surface);
     color: var(--color-text);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, border-top-color .3s ease;
+  }
+
+  .subclub-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0 var(--color-orange);
+    border-top-color: var(--color-orange);
+  }
+
+  .subclub-card i {
+    color: var(--color-orange);
+    font-size: 1.1rem;
   }
 
   .subclub-card strong {
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+    line-height: 1.15;
   }
 
   .subclub-card p {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     opacity: 0.8;
-  }
-
-  .subclubs-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+    color: var(--color-text-muted);
   }
 
   .highlights-hero { padding: 4rem 0 1rem; }
@@ -353,6 +419,14 @@
     }
 
     .hero-facts {
+      grid-template-columns: 1fr;
+    }
+
+    .overview-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .subclubs-grid {
       grid-template-columns: 1fr;
     }
   }
