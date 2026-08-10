@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LightboxImage } from '$lib/lightbox';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		images: LightboxImage[];
@@ -13,17 +14,42 @@
 		colorShiftOnHover = true
 	}: Props = $props();
 
+	let containerEl: HTMLDivElement;
+	let observer: IntersectionObserver;
+
 	function handleOpen(item: LightboxImage) {
 		if (onOpen) onOpen({ src: item.src, alt: item.alt });
 	}
+
+	onMount(() => {
+		observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('visible');
+						try { observer.unobserve(entry.target); } catch (_) {}
+					}
+				}
+			},
+			{ rootMargin: '0px 0px 60px 0px', threshold: 0.05 }
+		);
+
+		if (containerEl) {
+			containerEl.querySelectorAll('.masonry-card:not(.visible)').forEach((el, i) => {
+				(el as HTMLElement).style.setProperty('--i', String(i));
+				try { observer.observe(el); } catch (_) {}
+			});
+		}
+
+		return () => observer?.disconnect();
+	});
 </script>
 
-<div class="masonry">
+<div class="masonry" bind:this={containerEl}>
 	{#if images.length > 0}
 		{#each images as img, i}
 			<button
 				class="masonry-card"
-				style="animation-delay: {i * 0.04}s"
 				aria-label={img.alt || 'Gallery image'}
 				onclick={() => handleOpen(img)}
 			>
@@ -59,17 +85,19 @@
 		background: none;
 		cursor: pointer;
 		outline: none;
-		animation: mason-in 0.5s cubic-bezier(.2,.8,.2,1) both;
+		opacity: 0;
+		transform: translateY(24px);
+		transition: opacity 0.5s cubic-bezier(.2,.8,.2,1), transform 0.5s cubic-bezier(.2,.8,.2,1);
+	}
+
+	.masonry-card.visible {
+		opacity: 1;
+		transform: translateY(0);
 	}
 
 	.masonry-card:focus-visible .masonry-frame {
 		outline: 3px solid var(--color-orange);
 		outline-offset: 3px;
-	}
-
-	@keyframes mason-in {
-		from { opacity: 0; transform: translateY(18px); }
-		to   { opacity: 1; transform: translateY(0); }
 	}
 
 	.masonry-frame {

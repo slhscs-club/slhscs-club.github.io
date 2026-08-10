@@ -4,6 +4,7 @@
   import Masonry from '$lib/components/Masonry.svelte';
   import Lightbox from '$lib/components/Lightbox.svelte';
   import ParticleLogo from '$lib/components/ParticleLogo.svelte';
+  import SegmentDisplay from '$lib/components/SegmentDisplay.svelte';
   import StoryCarousel from '$lib/components/StoryCarousel.svelte';
   import type { PageData } from './$types';
   import { formatEventDate } from '$lib/ics';
@@ -56,7 +57,7 @@
   <section class="section hero-section">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <h1 class="page-title">SLHS Computer Science Club</h1>
+        <h1 class="page-title"><SegmentDisplay text="SLHS Computer Science Club" /></h1>
         <p class="page-subtitle">
           Welcome to the <b>Seven Lakes High School Computer Science Club!</b> Join us to meet passionate students, grow your interest and knowledge in the field of computer science, and compete and create in a fun and welcoming community.
         </p>
@@ -144,7 +145,7 @@
   .hero-actions, .overview-actions, .events-cta, .highlights-cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
 
   .hero-card { padding: 1.5rem; background: var(--color-surface); }
-  .hero-logo-wrap { position: relative; width: 100%; min-height: 280px; display: grid; place-items: center; overflow: hidden; }
+  .hero-logo-wrap { position: relative; width: 100%; min-height: 420px; display: grid; place-items: center; overflow: hidden; }
   .hero-logo-wrap :global(.particle-logo) { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 1; }
 
   .hero-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 1rem; }
@@ -187,7 +188,7 @@
   @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } }
   @media (max-width: 768px) {
     .hero-section { padding: 2rem 0; }
-    .hero-logo-wrap { min-height: 200px; }
+    .hero-logo-wrap { min-height: 280px; }
     .hero-stat-grid { grid-template-columns: 1fr; }
     .overview-grid { grid-template-columns: 1fr; }
     .subclubs-grid { grid-template-columns: 1fr; }

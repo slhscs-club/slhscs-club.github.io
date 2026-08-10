@@ -39,6 +39,11 @@ export const load: PageServerLoad = async () => {
     })
     .sort((a, b) => b.date - a.date);
 
+  for (let i = galleryImages.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [galleryImages[i], galleryImages[j]] = [galleryImages[j], galleryImages[i]];
+  }
+
   const outputImages = galleryImages.map(({ date, ...img }) => img);
 
   return {

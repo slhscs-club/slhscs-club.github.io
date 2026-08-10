@@ -9,6 +9,7 @@
     const ctx = context;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 700;
 
     interface Particle {
       x: number; y: number;
@@ -50,8 +51,8 @@
 
     function geometry() {
       cssW = canvas.clientWidth; cssH = canvas.clientHeight;
-      logoSize = Math.min(560, cssH * 0.96, cssW * 0.6);
-      logoLeft = Math.max(0, Math.min(cssW - logoSize, (cssW - logoSize) / 2 + 36));
+      logoSize = Math.min(640, cssH * 0.92, cssW * 0.8);
+      logoLeft = Math.max(0, (cssW - logoSize) / 2);
       logoTop = (cssH - logoSize) / 2;
     }
 
@@ -94,7 +95,7 @@
       canvas.height = Math.round(canvas.clientHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (image.complete && image.naturalWidth > 0) {
-        if (reducedMotion) {
+        if (reducedMotion || isMobile) {
           drawStaticLogo();
         } else {
           drawStaticLogo();
