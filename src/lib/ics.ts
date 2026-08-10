@@ -203,6 +203,7 @@ export function getEventType(summary: string, description?: string): string {
   const t = (summary + ' ' + (description || '')).toLowerCase();
   if (/contest|competition/.test(t)) return 'contest';
   if (/competitive|practice|uil/.test(t)) return 'comp prog';
+  if (/intro|freshman|spectac|fish camp|orientation/.test(t)) return 'intro';
   if (/social|camp|socials/.test(t)) return 'social';
   if (/speaker|workshop/.test(t)) return 'special';
   return 'meeting';
