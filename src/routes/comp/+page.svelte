@@ -52,7 +52,7 @@
             <div class="ide-row"><span class="ide-h"># Teams</span></div>
             <div class="ide-row"><span class="ide-c">Three students per machine, single computer.</span></div>
             <div class="ide-row"><span class="ide-h"># Languages</span></div>
-            <div class="ide-row"><span class="ide-c">Java and C++.</span></div>
+            <div class="ide-row"><span class="ide-c">Java.</span></div>
           </div>
           <div>
             <div class="ide-row"><span class="ide-h"># Problems</span></div>
@@ -81,7 +81,7 @@
         <span class="ide-panel-lbl">get-involved.sh</span>
       </div>
       <div class="ide-cta-bd">
-        <div class="ide-row"><span class="ide-c">// No experience required. Show up to a practice, join Discord, or talk to the CP lead.</span></div>
+        <div class="ide-row"><span class="ide-c">// No experience required. Show up to a practice, join Discord, or talk to our officers.</span></div>
         <div class="ide-cta-acts">
           <a class="btn btn-primary" href="/calendar"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
           <a class="btn btn-secondary" href="https://discord.com/invite/eCRC3TCs"><i class="fa-brands fa-discord"></i> Discord</a>
