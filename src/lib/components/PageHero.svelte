@@ -23,6 +23,7 @@
   .page-hero {
     text-align: center;
     padding: 6rem 0 2rem;
+    border-bottom: 1px solid var(--color-navy);
   }
 
   .page-hero .page-subtitle {

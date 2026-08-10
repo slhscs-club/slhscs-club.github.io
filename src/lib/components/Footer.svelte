@@ -5,12 +5,11 @@
     { href: '/join', label: 'Join' },
     { href: '/calendar', label: 'Calendar' },
     { href: '/competitions', label: 'Competitions' },
-    { href: '/opportunities', label: 'Opportunities' },
     { href: '/resources', label: 'Resources' },
     { href: '/gallery', label: 'Gallery' },
     { href: 'https://discord.com/invite/eCRC3TCs', label: 'Discord' },
     { href: 'https://www.instagram.com/slhscs/', label: 'Instagram' },
-    { href: 'https://github.com/slhscs', label: 'GitHub' }
+    { href: 'https://github.com/slhscs-club', label: 'GitHub' }
   ];
 </script>
 
