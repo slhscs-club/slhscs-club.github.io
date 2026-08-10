@@ -54,9 +54,10 @@
       <div class="requirements-card">
         <h3>Requirements for Induction</h3>
         <ul>
-          <li><i class="fa-solid fa-check"></i> Volunteer 8 hours towards our club</li>
-          <li><i class="fa-solid fa-check"></i> Pay a fee to support the club on Pay n Go under Computer Science Club</li>
+          <li><i class="fa-solid fa-check"></i> Be enrolled in a computer science course and earn a grade of B or higher each semester</li>
+          <li><i class="fa-solid fa-check"></i> Pay the membership fee through Pay n Go under Computer Science Club</li>
           <li><i class="fa-solid fa-check"></i> Fill out the registration Google Form</li>
+          <li><i class="fa-solid fa-check"></i> Complete point-based volunteering requirements. <a class="cshs-link" href="/cshs">See details.</a></li>
         </ul>
       </div>
 
@@ -145,6 +146,12 @@
 
   .requirements-card i {
     color: var(--color-orange);
+  }
+
+  .cshs-link {
+    color: var(--color-orange);
+    text-decoration: underline;
+    font-weight: 700;
   }
 
   .signup-card {
