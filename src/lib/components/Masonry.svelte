@@ -25,7 +25,7 @@
 		animateFrom = 'bottom',
 		scaleOnHover = true,
 		hoverScale = 0.95,
-		blurToFocus = true,
+		blurToFocus = false,
 		colorShiftOnHover = false
 	}: Props = $props();
 
@@ -47,6 +47,10 @@
 	const items = $derived<Item[]>(
 		images.map((img, index) => ({ id: String(index), img: img.src, url: img.src, alt: img.alt }))
 	);
+
+	// GSAP keeps its ticker running forever once started; put it to sleep between
+	// tweens so an idle page does zero background animation work.
+	const sleepTicker = () => gsap.ticker.sleep();
 
 	function computeColumns() {
 		if (typeof window === 'undefined') return 1;
@@ -150,11 +154,12 @@
 							...(blurToFocus && { filter: 'blur(0px)' }),
 							duration: 0.8,
 							ease: 'power3.out',
-							delay: index * stagger
+							delay: index * stagger,
+							onComplete: sleepTicker
 						}
 					);
 				} else {
-					gsap.to(selector, { ...animProps, duration, ease, overwrite: 'auto' });
+					gsap.to(selector, { ...animProps, duration, ease, overwrite: 'auto', onComplete: sleepTicker });
 				}
 			});
 			hasMounted = true;
@@ -162,17 +167,17 @@
 	});
 
 	function handleEnter(id: string, el: HTMLElement) {
-		if (scaleOnHover) gsap.to(`[data-key="${id}"]`, { scale: hoverScale, duration: 0.3, ease: 'power2.out' });
+		if (scaleOnHover) gsap.to(`[data-key="${id}"]`, { scale: hoverScale, duration: 0.3, ease: 'power2.out', onComplete: sleepTicker });
 		if (colorShiftOnHover) {
 			const overlay = el.querySelector('.color-overlay') as HTMLElement | null;
-			if (overlay) gsap.to(overlay, { opacity: 0.3, duration: 0.3 });
+			if (overlay) gsap.to(overlay, { opacity: 0.3, duration: 0.3, onComplete: sleepTicker });
 		}
 	}
 	function handleLeave(id: string, el: HTMLElement) {
-		if (scaleOnHover) gsap.to(`[data-key="${id}"]`, { scale: 1, duration: 0.3, ease: 'power2.out' });
+		if (scaleOnHover) gsap.to(`[data-key="${id}"]`, { scale: 1, duration: 0.3, ease: 'power2.out', onComplete: sleepTicker });
 		if (colorShiftOnHover) {
 			const overlay = el.querySelector('.color-overlay') as HTMLElement | null;
-			if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3 });
+			if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3, onComplete: sleepTicker });
 		}
 	}
 
@@ -269,7 +274,7 @@
 		position: absolute;
 		inset: 0;
 		border-radius: 10px;
-		background: linear-gradient(135deg, rgba(255, 107, 44, 0.45), rgba(21, 35, 63, 0.45));
+		background: linear-gradient(135deg, rgba(255, 107, 44, 0.45), rgba(38, 54, 80, 0.5));
 		opacity: 0;
 		pointer-events: none;
 	}
