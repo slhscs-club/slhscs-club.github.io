@@ -40,7 +40,7 @@
   const orderedHomeImages = Object.entries(homeImages).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
 
   const subclubs = [
-    { icon: 'fa-code', title: 'Competitive Programming', description: 'Contests & practice', link: '/cp' },
+    { icon: 'fa-code', title: 'Competitive Programming', description: 'Contests & practice', link: '/comp' },
     { icon: 'fa-robot', title: 'AI', description: 'Machine learning topics' },
     { icon: 'fa-people-group', title: 'Girls Who Code', description: 'Women-only chapter' },
     { icon: 'fa-award', title: 'Honor Society', description: 'Academic excellence', link: '/cshs' },

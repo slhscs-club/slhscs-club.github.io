@@ -11,43 +11,53 @@
 <Shell activePage="">
   <div class="cshs-root">
     <div class="cshs-banner">
-      <div class="cshs-shield">
+      <div class="cshs-crest">
         <i class="fa-solid fa-award"></i>
       </div>
-      <h1>Computer Science Honor Society</h1>
+      <span class="cshs-tag">CSHS</span>
+      <h1>Computer Science<br />Honor Society</h1>
       <p>Distinguish yourself. Lead. Serve.</p>
     </div>
 
-    <div class="cshs-grid">
-      <div class="cshs-card card-course">
-        <span class="cshs-num">I</span>
-        <h2>Academic Standing</h2>
-        <p>Be enrolled in a computer science course each semester and maintain a grade of <strong>B or higher</strong>.</p>
+    <div class="cshs-requirements">
+      <div class="cshs-req">
+        <div class="cshs-req-num">I</div>
+        <div class="cshs-req-body">
+          <h3>Academic Standing</h3>
+          <p>Be enrolled in a computer science course each semester and maintain a grade of <em>B or higher</em>.</p>
+        </div>
       </div>
 
-      <div class="cshs-card card-fee">
-        <span class="cshs-num">II</span>
-        <h2>Membership Fee</h2>
-        <p>Pay the annual fee through <strong>Pay n Go</strong> under Computer Science Club.</p>
+      <div class="cshs-req">
+        <div class="cshs-req-num">II</div>
+        <div class="cshs-req-body">
+          <h3>Membership Fee</h3>
+          <p>Pay the annual dues through <em>Pay n Go</em> under Computer Science Club.</p>
+        </div>
       </div>
 
-      <div class="cshs-card card-form">
-        <span class="cshs-num">III</span>
-        <h2>Registration</h2>
-        <p>Complete the official registration form with accurate information.</p>
+      <div class="cshs-req">
+        <div class="cshs-req-num">III</div>
+        <div class="cshs-req-body">
+          <h3>Registration</h3>
+          <p>Complete the official Google Form with accurate information.</p>
+        </div>
       </div>
 
-      <div class="cshs-card card-vol">
-        <span class="cshs-num">IV</span>
-        <h2>Point-Based Volunteering</h2>
-        <p>Earn points across <strong>service</strong>, <strong>leadership</strong>, and <strong>participation</strong> categories.</p>
-        <div class="cshs-stub">Full breakdown coming soon &mdash; check with an officer.</div>
+      <div class="cshs-req">
+        <div class="cshs-req-num">IV</div>
+        <div class="cshs-req-body">
+          <h3>Volunteering Points</h3>
+          <p>Earn points across <em>service</em>, <em>leadership</em>, and <em>participation</em> categories throughout the year.</p>
+          <div class="cshs-req-note">Point breakdown and tracking coming soon &mdash; ask an officer for details.</div>
+        </div>
       </div>
     </div>
 
-    <div class="cshs-quote">
-      <i class="fa-solid fa-quote-left"></i>
-      <span>Induction into an Honor Society is a mark of dedication that colleges and scholarship committees recognize.</span>
+    <div class="cshs-motto">
+      <div class="cshs-motto-line"></div>
+      <span>Induction is a mark of dedication recognized by colleges and scholarship committees nationwide.</span>
+      <div class="cshs-motto-line"></div>
     </div>
   </div>
 
@@ -58,126 +68,142 @@
 </Shell>
 
 <style>
-  :global(body) { background: #0d0b0a; }
+  :global(html) { background: #16100e; }
+  :global(body) { background: #16100e; }
 
   .cshs-root {
-    padding: 3rem 1rem 1rem;
-    max-width: 900px;
+    max-width: 780px;
     margin: 0 auto;
+    padding: 3.5rem 1.5rem 2rem;
   }
 
   .cshs-banner {
     text-align: center;
-    padding: 3rem 0 2rem;
-    border-bottom: 1px solid rgba(255, 180, 40, 0.2);
+    padding: 0 0 3rem;
+    border-bottom: 2px solid rgba(196, 162, 72, 0.18);
     margin-bottom: 2.5rem;
   }
 
-  .cshs-shield {
-    width: 80px;
-    height: 80px;
+  .cshs-crest {
+    width: 90px;
+    height: 90px;
     margin: 0 auto 1.2rem;
-    border: 2px solid #c9a84c;
-    border-radius: 50%;
+    border: 3px solid #b8943a;
     display: grid;
     place-items: center;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.04));
+    background: linear-gradient(145deg, rgba(184, 148, 58, 0.2), rgba(184, 148, 58, 0.05));
   }
 
-  .cshs-shield i {
-    font-size: 2.2rem;
-    color: #c9a84c;
+  .cshs-crest i {
+    font-size: 2.4rem;
+    color: #d4af37;
+  }
+
+  .cshs-tag {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid rgba(196, 162, 72, 0.35);
+    color: #c4a248;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 1rem;
   }
 
   .cshs-banner h1 {
-    margin: 0;
+    margin: 0 0 0.5rem;
     font-family: 'IBM Plex Mono', 'SF Mono', monospace;
-    font-size: clamp(2rem, 4vw, 3rem);
-    color: #f5e6c8;
-    letter-spacing: 0.02em;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.1;
+    color: #e8d8b0;
+    letter-spacing: 0.01em;
   }
 
   .cshs-banner p {
-    margin: 0.5rem 0 0;
-    color: #c9a84c;
-    font-size: 0.9rem;
-    letter-spacing: 0.2em;
+    margin: 0;
+    color: #b8943a;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    font-weight: 600;
   }
 
-  .cshs-grid {
+  .cshs-requirements {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .cshs-req {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
     gap: 1.2rem;
+    padding: 1.5rem 1.6rem;
+    background: #1c1511;
+    border: 1px solid rgba(184, 148, 58, 0.14);
+    border-left: 4px solid #b8943a;
+    align-items: start;
   }
 
-  .cshs-card {
-    padding: 1.8rem;
-    background: #161310;
-    border: 1px solid rgba(201, 168, 76, 0.18);
-    border-top: 3px solid #c9a84c;
-    position: relative;
-  }
-
-  .cshs-num {
-    position: absolute;
-    top: 1.2rem;
-    right: 1.4rem;
+  .cshs-req-num {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    color: rgba(201, 168, 76, 0.5);
-    letter-spacing: 0.1em;
+    font-size: 1.5rem;
+    color: #b8943a;
+    font-weight: 700;
+    line-height: 1;
+    padding-top: 0.1rem;
   }
 
-  .cshs-card h2 {
-    margin: 0 0 0.6rem;
-    font-size: 1.15rem;
+  .cshs-req-body h3 {
+    margin: 0 0 0.3rem;
+    font-size: 1.1rem;
+    color: #d9cfa6;
     font-family: 'IBM Plex Mono', monospace;
-    color: #e8d5a3;
     letter-spacing: 0.02em;
   }
 
-  .cshs-card p {
+  .cshs-req-body p {
     margin: 0;
-    color: #9d9488;
+    color: #a69572;
     line-height: 1.5;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 
-  .cshs-card strong {
-    color: #c9a84c;
+  .cshs-req-body em {
+    color: #d4af37;
+    font-style: normal;
+    font-weight: 600;
   }
 
-  .cshs-stub {
-    margin-top: 1rem;
-    padding: 0.5rem 0.7rem;
-    background: rgba(201, 168, 76, 0.08);
-    border-left: 2px solid #c9a84c;
-    color: #c9a84c;
-    font-size: 0.78rem;
-    font-style: italic;
+  .cshs-req-note {
+    margin-top: 0.8rem;
+    padding: 0.5rem 0.8rem;
+    background: rgba(184, 148, 58, 0.07);
+    border-left: 2px solid #b8943a;
+    color: #b8943a;
+    font-size: 0.76rem;
+    line-height: 1.4;
   }
 
-  .cshs-quote {
+  .cshs-motto {
     display: flex;
+    align-items: center;
     gap: 1rem;
-    padding: 2rem 1.5rem;
-    margin-top: 2rem;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(201, 168, 76, 0.02));
-    border: 1px solid rgba(201, 168, 76, 0.15);
-    color: #a3916a;
+    padding: 2rem 0;
+    margin-top: 1rem;
+    color: #6b5f47;
     font-style: italic;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    text-align: center;
+    line-height: 1.5;
   }
 
-  .cshs-quote i {
-    font-size: 1.5rem;
-    color: #c9a84c;
-    flex-shrink: 0;
+  .cshs-motto-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(184, 148, 58, 0.2), transparent);
   }
 
-  @media (max-width: 600px) {
-    .cshs-grid { grid-template-columns: 1fr; }
+  @media (max-width: 500px) {
+    .cshs-req { grid-template-columns: 1fr; gap: 0.4rem; }
+    .cshs-req-num { font-size: 1rem; }
   }
 </style>
