@@ -42,7 +42,7 @@
         <div class="fresco-tier">
           <div class="fresco-tier-num">100<span>pts</span></div>
           <h3>Alpha / New Member</h3>
-          <p>For students being inducted for the first time, especially younger students.</p>
+          <p>For students being inducted for the first time.</p>
         </div>
         <div class="fresco-tier">
           <div class="fresco-tier-num">150<span>pts</span></div>
@@ -79,15 +79,8 @@
         </div>
       </div>
 
-      <div class="fresco-math">
-        <span>40</span><span class="fresco-plus">+</span><span>40</span><span class="fresco-plus">+</span><span>20</span><span class="fresco-eq">=</span><span class="fresco-total">100</span>
-        <p class="fresco-math-label">the clean minimum for a new member</p>
-      </div>
-    </div>
-
     <div class="fresco-section">
-      <h2>Event Points</h2>
-      <p class="fresco-section-p">The event category is deliberately broad. CSHS should recognize participation in CS, not just one form of it.</p>
+      <h2>Approved Events</h2>
 
       <div class="fresco-pts-grid">
         <div class="fresco-pt"><strong>Qualifying event</strong><span>20 pts</span></div>
@@ -96,11 +89,6 @@
         <div class="fresco-pt"><strong>CS social</strong><span>20 pts</span></div>
         <div class="fresco-pt"><strong>Other approved CS event</strong><span>20 pts</span></div>
       </div>
-    </div>
-
-    <div class="fresco-section">
-      <h2>Why 150 for Returning Members?</h2>
-      <p class="fresco-section-p">There are approximately 10 months of meetings. A consistent member attending every qualifying meeting earns 10 × 10 = <em>100</em> points. Add minimum service: <em>40</em>. Add just one event: <em>20</em>. That is <em>160</em> points naturally. A returning member needs sustained participation, but 150 is not so high that CSHS becomes a second full-time extracurricular.</p>
     </div>
 
     <div class="fresco-section">
