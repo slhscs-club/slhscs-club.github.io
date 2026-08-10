@@ -36,6 +36,29 @@
     { name: 'Jackson MacGregor', role: 'Web Development' }
   ].map((o) => ({ ...o, image: getOfficerImage(o.name) }));
 
+  const structure = [
+    {
+      icon: 'fa-chalkboard-user',
+      title: 'Weekly Meetings',
+      text: 'Every Monday after school we hold a general meeting with presentations on CS topics delivered by our own members, from algorithms to web dev, game dev, and career advice.'
+    },
+    {
+      icon: 'fa-code',
+      title: 'Competitive Programming',
+      text: 'Weekly CP practice sessions where members work through problems together, plus USACO, HP Code Wars, UIL CS, and local contests.'
+    },
+    {
+      icon: 'fa-trophy',
+      title: 'National October Contest',
+      text: 'Every year we host our own national programming contest, produced entirely by the CS Club. We need problem writers, testers, judges, and volunteers.'
+    },
+    {
+      icon: 'fa-people-group',
+      title: 'Social Events',
+      text: 'Social events throughout the year help members connect and build community outside of coding.'
+    }
+  ];
+
   const faqItems = [
     {
       q: 'What activities does the club do?',
@@ -64,58 +87,51 @@
 <Shell activePage="about">
   <PageHero title="About Us" subtitle="Learn about the Seven Lakes High School Computer Science Club" />
 
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">Our History</h2>
-      <p>
-        The Seven Lakes High School Computer Science Club has been running for around 15 years, growing from a UIL academics team into one of the most active clubs on campus. We've hosted national programming contests with over 350 attendees, won UIL CS State multiple times, and built a community that welcomes students of all skill levels and interests.
-      </p>
+  <section class="section history-band">
+    <div class="container history-grid">
+      <div class="history-copy">
+        <h2 class="section-title">Our History</h2>
+        <p>
+          The Seven Lakes High School Computer Science Club has been running for around 15 years, growing from a UIL academics team into one of the most active clubs on campus. We've hosted national programming contests with over 350 attendees, won UIL CS State multiple times, and built a community that welcomes students of all skill levels and interests.
+        </p>
+        <p class="history-footnote">
+          <i class="fa-solid fa-location-dot"></i> We meet every Monday at 2:45 PM in Room 1001.
+        </p>
+      </div>
+      <div class="history-stats">
+        {#each achievements as ach}
+          <div class="achievement-card">
+            <strong>{ach.prefix}<CountUp from={0} to={ach.num} separator="" direction="up" duration={0.8} />{ach.suffix}</strong>
+            <p>{ach.label}</p>
+          </div>
+        {/each}
+      </div>
     </div>
   </section>
 
   <section class="section overview-band">
     <div class="container">
       <h2 class="section-title">How the Club Works</h2>
-      <p class="section-lead">We meet every Monday at 2:45 PM in Room 1001. Here's how we're structured.</p>
+      <p class="section-lead">Here's how we're structured.</p>
 
       <div class="structure-grid">
-        <div class="structure-card color-orange">
-          <h3>Weekly Meetings</h3>
-          <p>Every Monday after school, we hold a general meeting with presentations on CS topics delivered by our own members. Topics range from algorithms and data structures to web development, game dev, and career advice.</p>
-        </div>
-        <div class="structure-card color-orange">
-          <h3>Competitive Programming</h3>
-          <p>We hold weekly CP practice sessions where members work through programming problems together. We attend several local contests throughout the year hosted by neighboring schools, plus USACO, HP Code Wars, and UIL CS.</p>
-        </div>
-        <div class="structure-card color-orange">
-          <h3>National October Contest</h3>
-          <p>Every year we host our own national programming contest, produced entirely by the CS Club. We need problem writers, testers, judges, and volunteers to help put the event together.</p>
-        </div>
-        <div class="structure-card color-orange">
-          <h3>Social Events</h3>
-          <p>We also run social events throughout the year to help members connect and build community outside of coding.</p>
-        </div>
+        {#each structure as item}
+          <div class="structure-card">
+            <i class="fa-solid {item.icon}"></i>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </div>
+        {/each}
       </div>
-    </div>
-  </section>
-
-  <section class="section section-tight achievements-strip">
-    <div class="container achievements-grid">
-      {#each achievements as ach}
-        <div class="achievement-card">
-          <strong>{ach.prefix}<CountUp from={0} to={ach.num} separator="" direction="up" duration={0.8} />{ach.suffix}</strong>
-          <p>{ach.label}</p>
-        </div>
-      {/each}
     </div>
   </section>
 
   <section class="section">
     <div class="container">
       <h2 class="section-title">Frequently Asked Questions</h2>
-      <div class="faq-list">
+      <div class="faq-grid">
         {#each faqItems as item}
-          <div class="faq-item color-orange">
+          <div class="faq-item">
             <h3>{item.q}</h3>
             <p>{item.a}</p>
           </div>
@@ -124,7 +140,7 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section officers-section">
     <div class="container">
       <h2 class="section-title">Our Officers</h2>
       <p class="section-lead">The students who keep the club running:</p>
@@ -140,27 +156,66 @@
 </Shell>
 
 <style>
-  .overview-band {
-    border-top: 3px solid var(--color-orange);
-    border-bottom: 3px solid var(--color-orange);
-    background: rgba(255, 255, 255, 0.02);
+  .history-band {
+    padding: 4rem 0 2rem;
   }
 
-  .achievements-grid {
+  .history-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .history-copy p {
+    margin: 0 0 1rem;
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+  }
+
+  .history-footnote {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    border-left: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .history-footnote i {
+    color: var(--color-orange);
+  }
+
+  .history-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 
   .achievement-card {
     padding: 1.4rem;
-    background: var(--color-navy, #15233f);
-    color: var(--color-white);
+    border: 1px solid var(--color-navy);
     border-top: 3px solid var(--color-orange);
+    background: var(--color-surface);
+    color: var(--color-white);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
   }
 
-  .achievement-card strong { display: block; font-size: 2rem; color: var(--color-orange); }
-  .achievement-card p { margin: .35rem 0 0; }
+  .achievement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0 var(--color-orange);
+  }
+
+  .achievement-card strong { display: block; font-size: 2rem; color: var(--color-orange); font-family: var(--font-mono); }
+  .achievement-card p { margin: .35rem 0 0; color: var(--color-text-muted); }
+
+  .overview-band {
+    border-top: 3px solid var(--color-orange);
+    border-bottom: 3px solid var(--color-orange);
+    background: rgba(255, 255, 255, 0.02);
+  }
 
   .structure-grid {
     display: grid;
@@ -170,10 +225,22 @@
 
   .structure-card {
     padding: 1.5rem;
-    border: 1px solid var(--color-blue);
+    border: 1px solid var(--color-navy);
     border-top: 3px solid var(--color-orange);
     background: var(--color-surface);
     color: var(--color-text);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+  }
+
+  .structure-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0 var(--color-orange);
+  }
+
+  .structure-card i {
+    color: var(--color-orange);
+    font-size: 1.6rem;
+    margin-bottom: 0.9rem;
   }
 
   .structure-card h3 {
@@ -183,39 +250,55 @@
   .structure-card p {
     margin: 0;
     opacity: 0.9;
+    color: var(--color-text-muted);
   }
 
-  .faq-list {
+  .faq-grid {
     display: grid;
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   .faq-item {
-    padding: 1.2rem;
-    border: 1px solid var(--color-blue);
+    padding: 1.2rem 1.3rem;
+    border: 1px solid var(--color-navy);
     border-left: 3px solid var(--color-orange);
     background: var(--color-surface);
     color: var(--color-text);
-    box-shadow: var(--orange-shadow);
   }
 
   .faq-item h3 {
     margin: 0 0 0.5rem;
     color: var(--color-text);
+    font-size: 1.05rem;
   }
 
   .faq-item p {
     margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .officers-section {
+    padding-bottom: 3rem;
   }
 
   @media (max-width: 1024px) {
-    .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+    .history-grid {
+      grid-template-columns: 1fr;
+    }
+
     .structure-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .faq-grid {
       grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 600px) {
-    .achievements-grid { grid-template-columns: 1fr; }
+    .history-stats {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
