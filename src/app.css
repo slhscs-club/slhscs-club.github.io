@@ -181,6 +181,22 @@ textarea {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 
+/* Lite mode: mobile/low-end — kill all animations and heavy effects */
+html.perf-lite *, html.perf-lite *::before, html.perf-lite *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+html.perf-lite .hero-section::after { display: none; }
+html.perf-lite .footer-wrap::before { display: none; }
+html.perf-lite .particle-logo { display: none !important; }
+html.perf-lite .word-reveal { opacity: 1; transform: none; }
+
+/* Reduced mode: keep structure, drop heavy ambient animations */
+html.perf-reduced .hero-section::after { animation-duration: 0.01ms !important; }
+html.perf-reduced .footer-wrap::before { animation-duration: 0.01ms !important; }
+html.perf-reduced .word-reveal { opacity: 1; transform: none; transition: none; }
+
 /* Page transitions (View Transitions API, opt-in in layout) */
 ::view-transition-old(root) { animation: vt-out .28s ease both; }
 ::view-transition-new(root) { animation: vt-in .5s cubic-bezier(.2,.8,.2,1) both; }
