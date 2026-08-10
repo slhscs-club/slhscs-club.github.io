@@ -1,4 +1,3 @@
-<!-- Taken from sveltebits -->
 <script lang="ts">
 	import { animate } from 'motion';
 	import { getDecimalPlaces, formatValue } from '$lib/format';

@@ -38,7 +38,6 @@
 	let imagesReady = $state(false);
 	let hasMounted = false;
 
-	/** Natural height/width ratio per card, measured once each image finishes loading. */
 	const ratios = $state<Record<string, number>>({});
 	const DEFAULT_RATIO = 3 / 5;
 
@@ -57,7 +56,6 @@
 		return 1;
 	}
 
-	/** Places each card into the shortest column, using its measured aspect ratio. */
 	const grid = $derived.by<GridItem[]>(() => {
 		if (!width) return [];
 		const colHeights = new Array(columns).fill(0);

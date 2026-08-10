@@ -4,9 +4,10 @@
   import CTACard from '$lib/components/CTACard.svelte';
   import Masonry from '$lib/components/Masonry.svelte';
   import Lightbox from '$lib/components/Lightbox.svelte';
+  import SegmentDisplay from '$lib/components/SegmentDisplay.svelte';
   import type { PageData } from './$types';
   import { formatEventDate } from '$lib/ics';
-  import { openLightbox, closeLightbox, type LightboxImage } from '$lib/lightbox';
+  import type { LightboxImage } from '$lib/lightbox';
 
   export let data: PageData;
   const { highlights, events: serverEvents } = data;
@@ -14,11 +15,11 @@
   let selectedImage: LightboxImage | null = null;
 
   function onOpenLightbox(img: LightboxImage) {
-    selectedImage = openLightbox(img);
+    selectedImage = img;
   }
 
   function onCloseLightbox() {
-    selectedImage = closeLightbox();
+    selectedImage = null;
   }
 
   const achievements = [
@@ -47,7 +48,9 @@
   <section class="section hero-section">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <h1 class="page-title">SLHS Computer Science Club</h1>
+        <h1 class="page-title">
+          <SegmentDisplay text="SLHS Computer Science Club" />
+        </h1>
         <p class="page-subtitle">
           Welcome to the <b>Seven Lakes High School Computer Science Club!</b> Join us to meet passionate students, grow your interest and knowledge in the field of computer science, and compete and create in a fun and welcoming community.
         </p>
@@ -263,14 +266,14 @@
 
   .hero-stat strong {
     display: block;
-    margin-bottom: 0.35rem;
-    font-size: 1.2rem;
+    margin-bottom: 0.15rem;
+    font-size: 1.3rem;
   }
 
   .hero-stat p {
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     opacity: 0.92;
   }
 

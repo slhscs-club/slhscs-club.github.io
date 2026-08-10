@@ -82,7 +82,6 @@ export const load: PageServerLoad = async () => {
   const highlightCount = Math.min(4, galleryImages.length);
   const highlights = selectHighlights(galleryImages, highlightCount, seed);
 
-  // Fetch ICS events server-side (avoids CORS issues)
   let events: ICSEvent[] = [];
   try {
     const response = await fetch(ICS_URL);

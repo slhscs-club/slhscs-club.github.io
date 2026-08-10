@@ -5,7 +5,7 @@
 	import Masonry from '$lib/components/Masonry.svelte';
 	import Lightbox from '$lib/components/Lightbox.svelte';
 	import type { PageData } from './$types';
-	import { openLightbox, closeLightbox, type LightboxImage } from '$lib/lightbox';
+	import type { LightboxImage } from '$lib/lightbox';
 
 	let { data }: { data: PageData } = $props();
 	const { galleryImages } = $derived(data);
@@ -13,11 +13,11 @@
 	let selectedImage: LightboxImage | null = $state(null);
 
 	function onOpenLightbox(img: LightboxImage) {
-		selectedImage = openLightbox(img);
+		selectedImage = img;
 	}
 
 	function onCloseLightbox() {
-		selectedImage = closeLightbox();
+		selectedImage = null;
 	}
 </script>
 
@@ -31,7 +31,7 @@
 
 	<section class="section">
 		<div class="container">
-			<Masonry images={galleryImages} onOpen={onOpenLightbox} colorShiftOnHover animateFrom={"bottom`"}/>
+			<Masonry images={galleryImages} onOpen={onOpenLightbox} colorShiftOnHover animateFrom="bottom" />
 		</div>
 	</section>
 

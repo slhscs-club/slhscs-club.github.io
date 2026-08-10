@@ -89,7 +89,6 @@ function expand(props: Record<string, string>): ICSEvent[] {
           end: new Date(d.getTime() + dur),
         }));
     } catch {
-      // fall through
     }
   }
 
