@@ -199,7 +199,7 @@
     </div>
 
     {#if showPast && pastEvents.length > 0}
-      <div class="past-section">
+      <div class="container"><div class="past-section">
         <h2 class="section-title">Past Events</h2>
         <p class="section-lead">Click an event to view details and media.</p>
         <ol class="upcoming-list">
@@ -219,7 +219,7 @@
             </li>
           {/each}
         </ol>
-      </div>
+      </div></div>
     {/if}
   </section>
 
