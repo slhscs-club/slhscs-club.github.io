@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { LightboxImage } from '$lib/lightbox';
 
 	type Props = {
@@ -14,15 +13,12 @@
 		colorShiftOnHover = true
 	}: Props = $props();
 
-	let mounted = $state(false);
-	onMount(() => { mounted = true; });
-
 	function handleOpen(item: LightboxImage) {
 		if (onOpen) onOpen({ src: item.src, alt: item.alt });
 	}
 </script>
 
-<div class="masonry" class:ready={mounted}>
+<div class="masonry">
 	{#if images.length > 0}
 		{#each images as img, i}
 			<button
@@ -31,7 +27,8 @@
 				aria-label={img.alt || 'Gallery image'}
 				onclick={() => handleOpen(img)}
 			>
-				<div class="masonry-image" style="background-image:url({img.src});">
+				<div class="masonry-frame">
+					<img src={img.src} alt={img.alt} class="masonry-img" loading="lazy" />
 					{#if colorShiftOnHover}
 						<div class="masonry-overlay"></div>
 					{/if}
@@ -62,36 +59,40 @@
 		background: none;
 		cursor: pointer;
 		outline: none;
-		opacity: 0;
-		transform: translateY(20px);
+		animation: mason-in 0.5s cubic-bezier(.2,.8,.2,1) both;
 	}
 
-	.masonry.ready .masonry-card {
-		animation: mason-in 0.55s cubic-bezier(.2,.8,.2,1) forwards;
-	}
-
-	.masonry-card:focus-visible .masonry-image {
+	.masonry-card:focus-visible .masonry-frame {
 		outline: 3px solid var(--color-orange);
 		outline-offset: 3px;
 	}
 
 	@keyframes mason-in {
-		to { opacity: 1; transform: translateY(0); }
+		from { opacity: 0; transform: translateY(18px); }
+		to   { opacity: 1; transform: translateY(0); }
 	}
 
-	.masonry-image {
-		width: 100%;
-		border-radius: 8px;
-		background-size: cover;
-		background-position: center;
-		box-shadow: 0 8px 30px -8px rgba(0,0,0,.3);
-		transition: transform .6s cubic-bezier(.2,.8,.2,1), filter .6s ease;
-		overflow: hidden;
+	.masonry-frame {
 		position: relative;
+		overflow: hidden;
+		border-radius: 8px;
+		box-shadow: 0 8px 30px -8px rgba(0,0,0,.3);
+		transition: transform .6s cubic-bezier(.2,.8,.2,1);
+		line-height: 0;
 	}
 
-	.masonry-card:hover .masonry-image {
+	.masonry-card:hover .masonry-frame {
 		transform: scale(1.035) skewX(-1deg);
+	}
+
+	.masonry-img {
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: filter .6s ease;
+	}
+
+	.masonry-card:hover .masonry-img {
 		filter: saturate(1.15) contrast(1.04) brightness(1.06);
 	}
 
