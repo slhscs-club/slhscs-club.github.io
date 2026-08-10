@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { afterNavigate } from '$app/navigation';
+
   let {
     activePage = 'home'
   }: {
@@ -12,10 +15,34 @@
     { href: '/about', label: 'About' },
     { href: '/calendar', label: 'Calendar' },
     { href: '/competitions', label: 'Competitions' },
-    { href: '/opportunities', label: 'Opportunities' },
     { href: '/resources', label: 'Resources' },
     { href: '/gallery', label: 'Gallery' }
   ];
+
+  let navEl: HTMLElement;
+  let indicator: HTMLElement;
+
+  function isActive(link: { href: string }): boolean {
+    return link.href === '/' + activePage || (link.href === '/' && activePage === 'home');
+  }
+
+  function placeIndicator(el: HTMLElement | null) {
+    if (!indicator || !navEl) return;
+    if (!el) el = navEl.querySelector<HTMLElement>('a[aria-current="page"]');
+    if (!el) {
+      indicator.style.opacity = '0';
+      return;
+    }
+    const navRect = navEl.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    indicator.style.left = `${rect.left - navRect.left}px`;
+    indicator.style.width = `${rect.width}px`;
+    indicator.dataset.active = 'true';
+    indicator.style.opacity = '1';
+  }
+
+  onMount(() => placeIndicator(null));
+  afterNavigate(() => placeIndicator(null));
 </script>
 
 <div class="sticky-top">
@@ -24,9 +51,14 @@
       <img class="logo-img" src="/assets/logos/logo.png" alt="SLHS CS Club" />
       SLHS CS Club
     </a>
-    <nav>
+    <nav bind:this={navEl} onpointerleave={() => placeIndicator(null)}>
+      <span class="nav-indicator" bind:this={indicator}></span>
       {#each navLinks as link}
-        <a href={link.href} aria-current={link.href === '/' + activePage || (link.href === '/' && activePage === 'home') ? 'page' : undefined}>{link.label}</a>
+        <a
+          href={link.href}
+          aria-current={isActive(link) ? 'page' : undefined}
+          onpointerenter={(e) => placeIndicator(e.currentTarget)}
+        >{link.label}</a>
       {/each}
     </nav>
     <div class="header-icons">
