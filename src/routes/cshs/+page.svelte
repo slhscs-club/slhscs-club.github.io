@@ -83,12 +83,9 @@
       <h2>Approved Events</h2>
 
       <div class="fresco-pts-grid">
-        <div class="fresco-pt"><strong>Qualifying event</strong><span>20 pts</span></div>
-        <div class="fresco-pt"><strong>Hackathon</strong><span>20 pts</span></div>
-        <div class="fresco-pt"><strong>Programming competition</strong><span>20 pts</span></div>
-        <div class="fresco-pt"><strong>CS social</strong><span>20 pts</span></div>
-        <div class="fresco-pt"><strong>Other approved CS event</strong><span>20 pts</span></div>
+        <div class="fresco-pt"><strong>Approved event</strong><span>20 pts</span></div>
       </div>
+      <p class="fresco-section-p" style="margin-top:0.8rem">Qualifying events, hackathons, programming competitions, CS socials, and other approved CS activities all earn 20 points.</p>
     </div>
 
     <div class="fresco-section">
