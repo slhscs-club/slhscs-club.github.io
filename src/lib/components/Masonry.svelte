@@ -8,10 +8,12 @@
 	};
 
 	let {
-		images,
+		images: rawImages,
 		onOpen,
 		colorShiftOnHover = true
 	}: Props = $props();
+
+	const images = $derived([...rawImages].sort(() => Math.random() - 0.5));
 
 	function handleOpen(item: LightboxImage) {
 		if (onOpen) onOpen({ src: item.src, alt: item.alt });
@@ -23,7 +25,6 @@
 		{#each images as img, i}
 			<button
 				class="masonry-card"
-				style="animation-delay:{i * 0.02}s"
 				aria-label={img.alt || 'Gallery image'}
 				onclick={() => handleOpen(img)}
 			>
@@ -55,10 +56,11 @@
 		background: none;
 		cursor: pointer;
 		outline: none;
-		animation: mason-in 0.5s cubic-bezier(.2,.8,.2,1) both;
-	}
+	animation: none;
+	opacity: 1;
+	transform: none;
+}
 	.masonry-card:focus-visible .masonry-frame { outline: 3px solid var(--color-orange); outline-offset: 3px; }
-	@keyframes mason-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 	.masonry-frame { position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 30px -8px rgba(0,0,0,.3); transition: transform .6s cubic-bezier(.2,.8,.2,1); line-height: 0; }
 	.masonry-card:hover .masonry-frame { transform: scale(1.035) skewX(-1deg); }
 	.masonry-img { display: block; width: 100%; height: auto; max-height: 80vh; object-fit: cover; transition: filter .6s ease; }
