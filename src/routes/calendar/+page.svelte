@@ -36,7 +36,7 @@
 
   let now = $state(new Date());
   let showPast = $state(false);
-  let showMedia = $state(false);
+  let selectedEvent = $state<any>(null);
 
   const pastEvents = $derived(
     events.filter((e: any) => e.start < now).sort((a: any, b: any) => b.start.getTime() - a.start.getTime()).slice(0, 20)
@@ -196,18 +196,16 @@
       <button class="btn btn-secondary" onclick={() => (showPast = !showPast)}>
         <i class="fa-solid fa-clock-rotate-left"></i> {showPast ? 'Hide' : 'View'} Past Events
       </button>
-      <button class="btn btn-secondary" onclick={() => (showMedia = true)}>
-        <i class="fa-solid fa-photo-film"></i> View Media
-      </button>
     </div>
 
     {#if showPast && pastEvents.length > 0}
       <div class="past-section">
         <h2 class="section-title">Past Events</h2>
+        <p class="section-lead">Click an event to view details and media.</p>
         <ol class="upcoming-list">
           {#each pastEvents as event}
             {@const type = getEventType(event.summary, event.description)}
-            <li class="upcoming-item past-item">
+            <li class="upcoming-item past-item" onclick={() => (selectedEvent = event)} onkeydown={(e) => (e.key === 'Enter') && (selectedEvent = event)} role="button" tabindex="0">
               <div class="upcoming-date">
                 <b>{dayNumber(event.start)}</b>
                 <span>{monthAbbr(event.start)}</span>
@@ -217,6 +215,7 @@
                 <span class="upcoming-meta">{weekdayAbbr(event.start)} · {timeLabel(event.start)}</span>
               </div>
               <span class="event-type">{type}</span>
+              <i class="fa-solid fa-chevron-right past-chevron"></i>
             </li>
           {/each}
         </ol>
@@ -224,36 +223,42 @@
     {/if}
   </section>
 
-  {#if showMedia}
+  {#if selectedEvent}
   <FullscreenPanel>
       <div class="media-panel">
         <div class="media-header">
-          <h2>Calendar Media</h2>
-          <button class="btn btn-primary" onclick={() => (showMedia = false)}><i class="fa-solid fa-xmark"></i> Close</button>
+          <div>
+            <h2>{selectedEvent.summary}</h2>
+            <p class="media-meta">{formatEventDate(selectedEvent.start)} · {timeLabel(selectedEvent.start)} · {weekdayAbbr(selectedEvent.start)}</p>
+          </div>
+          <button class="btn btn-primary" onclick={() => (selectedEvent = null)}><i class="fa-solid fa-xmark"></i> Close</button>
         </div>
+        {#if selectedEvent.description}
+          <div class="media-desc">{selectedEvent.description}</div>
+        {/if}
         <div class="media-grid">
           <div class="media-slot">
             <i class="fa-solid fa-file-powerpoint"></i>
             <h3>Presentations</h3>
-            <p>Upload slides or PDFs from previous meetings.</p>
+            <p>Slides or PDFs from this meeting.</p>
             <span class="badge">Coming soon</span>
           </div>
           <div class="media-slot">
             <i class="fa-solid fa-video"></i>
-            <h3>Videos</h3>
-            <p>Meeting recordings, tutorials, and demos.</p>
+            <h3>Recording</h3>
+            <p>Video recording of this session.</p>
             <span class="badge">Coming soon</span>
           </div>
           <div class="media-slot">
             <i class="fa-solid fa-link"></i>
             <h3>Links</h3>
-            <p>Relevant resources, contest links, and references.</p>
+            <p>Resources and references from this meeting.</p>
             <span class="badge">Coming soon</span>
           </div>
           <div class="media-slot">
             <i class="fa-solid fa-newspaper"></i>
-            <h3>Posts</h3>
-            <p>Announcements, recaps, and updates from the club.</p>
+            <h3>Notes</h3>
+            <p>Meeting notes and recaps.</p>
             <span class="badge">Coming soon</span>
           </div>
         </div>
@@ -569,8 +574,11 @@
     white-space: nowrap;
   }
 
-  .past-item { opacity: 0.7; }
+  .past-item { opacity: 0.7; cursor: pointer; }
   .past-item:hover { opacity: 1; }
+  .past-chevron { color: var(--color-text-muted); font-size: 0.7rem; }
+  .media-desc { padding: 1rem 1.2rem; background: var(--color-bg); border-left: 3px solid var(--color-orange); color: var(--color-text-muted); margin-bottom: 1.5rem; line-height: 1.5; font-size: 0.88rem; border-radius: 2px; }
+  .media-meta { margin: 0.3rem 0 0; color: var(--color-text-muted); font-size: 0.82rem; }
 
   .cal-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 

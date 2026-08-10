@@ -133,6 +133,7 @@
 		if (!imagesReady || !grid.length) return;
 		(async () => {
 			await tick();
+			await new Promise(resolve => requestAnimationFrame(resolve));
 			grid.forEach((item, index) => {
 				const selector = `[data-key="${item.id}"]`;
 				const animProps = { x: item.x, y: item.y, width: item.w, height: item.h };
@@ -247,8 +248,9 @@
 	.masonry-card {
 		position: absolute;
 		cursor: pointer;
-		will-change: transform, width, height, opacity;
+		will-change: transform, opacity;
 		outline: none;
+		opacity: 0;
 	}
 
 	.masonry-card:focus-visible .masonry-card-inner {

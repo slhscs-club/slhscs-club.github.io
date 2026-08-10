@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { handleLightboxKeydown, type LightboxImage } from '$lib/lightbox';
 
   let {
@@ -8,13 +9,29 @@
     image: LightboxImage | null;
     onClose: () => void;
   } = $props();
+
+  let open = $state(false);
+  $effect(() => { open = !!image; });
+
+  onMount(() => {
+    return () => { document.body.style.overflow = ''; };
+  });
+
+  $effect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  });
 </script>
 
 <svelte:window on:keydown={(e) => handleLightboxKeydown(e, onClose)} />
 
 {#if image}
-  <div class="lightbox-backdrop" role="button" tabindex="0" onclick={onClose} onkeydown={(e) => e.key === 'Enter' || e.key === ' ' ? onClose() : null}>
-    <div class="lightbox-content" role="presentation" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
+  <div class="lightbox-backdrop" onclick={onClose} onkeydown={(e) => (e.key === 'Escape') && onClose()}>
+    <div class="lightbox-content" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
       <button class="lightbox-close" onclick={onClose} aria-label="Close">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -31,12 +48,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.92);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10000;
     padding: 2rem;
+    cursor: pointer;
   }
 
   .lightbox-content {
@@ -60,6 +78,12 @@
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
+    z-index: 10001;
+  }
+
+  .lightbox-close:hover {
+    background: var(--color-white);
+    color: var(--color-black);
   }
 
   .lightbox-image {

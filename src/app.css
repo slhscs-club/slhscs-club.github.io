@@ -107,13 +107,6 @@ textarea {
 
 /* ===== ANIMATIONS ===== */
 
-/* Glassmorphism on hover (desktop only) */
-@media (pointer: fine) {
-  .story-card:hover, .hero-fact:hover, .cs-club-card:hover {
-    backdrop-filter: blur(4px);
-  }
-}
-
 /* Physics spring for interactive elements */
 .btn, .join-btn, .icon-btn, .burger-btn {
   transition: transform .35s cubic-bezier(.175,.885,.32,1.275), box-shadow .35s ease, background .2s ease, color .2s ease, border-color .2s ease;
@@ -158,10 +151,7 @@ textarea {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(600px circle at var(--cursor-x, 50%) var(--cursor-y, 50%), rgba(255, 107, 44, .06), transparent 70%),
-    radial-gradient(32rem 20rem at 78% 42%, rgba(38, 54, 80, .3), transparent 68%),
-    radial-gradient(22rem 14rem at 17% 80%, rgba(255, 107, 44, .09), transparent 70%);
+  background: radial-gradient(32rem 20rem at 78% 42%, rgba(38, 54, 80, .3), transparent 68%), radial-gradient(22rem 14rem at 17% 80%, rgba(255, 107, 44, .09), transparent 70%);
   animation: mesh-drift 14s ease-in-out infinite alternate;
   pointer-events: none;
 }
