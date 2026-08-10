@@ -403,11 +403,13 @@
 
   .calendar-day {
     min-height: 110px;
+    min-width: 0;
     background: var(--color-bg);
     padding: 0.5rem;
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
   .calendar-day.other-month {
