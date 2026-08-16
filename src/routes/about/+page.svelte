@@ -31,7 +31,7 @@
     { name: 'Saanvi Saxena', role: 'Treasurer + Secretary' },
     { name: 'Avika Shrivastava', role: 'Historian' },
     { name: 'Eren Tor', role: 'Competitive Programming Lead' },
-    { name: 'Austin Yu', role: 'Contest Lead' },
+    { name: 'Austin Yu', role: 'Competitive Programming Co-Lead' },
     { name: 'Kushagra Nagar', role: 'Outreach Manager' },
     { name: 'Jackson MacGregor', role: 'Web Development' }
   ].map((o) => ({ ...o, image: getOfficerImage(o.name) }));
